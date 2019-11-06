@@ -201,7 +201,7 @@ CREATE TABLE `stockinfo` (
 -- ----------------------------
 DROP TABLE IF EXISTS `stockpricechange`;
 CREATE TABLE `stockpricechange` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `systime` timestamp NULL DEFAULT NULL,
   `stockID` varchar(20) DEFAULT NULL,
   `pricechanged` double DEFAULT NULL,
