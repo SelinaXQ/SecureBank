@@ -23,6 +23,7 @@ public class ManagerWin {
 	private JTabbedPane tabbedPane;
 
 	private ArrayList<CustomerID> customers;
+	private ArrayList<Stock> stocks;
 	private String welcomeInfo;
 
 	private SharedListSelectionHandler listener1;
@@ -31,18 +32,12 @@ public class ManagerWin {
 
 	private ATM atm;
 
-	public ManagerWin(ATM atm, int i) {
-		this.atm = atm;
-		welcomeInfo = "Hello " + this.atm.getManagerID(i) + "!";
-		customers = atm.getCustomerIDs();
-		setManagerWin();
-		initManagerWin();
-	}
 
 	public ManagerWin(ATM atm, ManagerID mId) {
 		this.atm = atm;
 		welcomeInfo = "Hello " + mId.getUserName() + "!";
 		customers = atm.getCustomersByDB();
+		stocks = atm.getStocksDB();
 		setManagerWin();
 		initManagerWin();
 	}
@@ -67,6 +62,7 @@ public class ManagerWin {
 		customerTF = new JTextField(15);
 
 		String[] customerStr = new String[customers.size()];
+		String[] stockStr = new String[stocks.size()];
 
 		for (int j = 0; j < customers.size(); j++) {
 			CustomerID cId = customers.get(j);
@@ -75,7 +71,7 @@ public class ManagerWin {
 
 		cList = new JList<String>(customerStr);
 
-		sList = new JList<String>();
+		sList = new JList<String>(stockStr);
 
 		p1 = new JPanel();
 		p2 = new JPanel();
@@ -118,8 +114,8 @@ public class ManagerWin {
 		stockIdField = new JTextField(15);
 		stockCompanyField = new JTextField(15);
 		stockPriceField = new JTextField(15);
-		lb = new JLabel("Stocks: ");
-		lb1 = new JLabel("Create a stock:  ");
+		lb = new JLabel("Stocks market: ");
+		lb1 = new JLabel("Create a new stock:  ");
 		stockIdLabel = new JLabel("Stock 's ID: ");
 		stockCompanyLabel = new JLabel("Company/Name: ");
 		stockPriceLabel = new JLabel("Price/per: ");

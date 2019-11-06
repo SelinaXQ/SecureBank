@@ -107,13 +107,14 @@ public class ATM {
 	public void transfer(CustomerID cId, Account acc, String acc2, double amount, int balanceType) {
 
 		double newM = acc.getBalances().get(balanceType).getMoney() - amount;
+		String acc1 = null;
+		String acc0 = acc.getAccountNumber();
 		acc.getBalances().get(balanceType).setMoney(newM);
 		for (int i = 0; i < cId.getAccounts().size(); i++) {
 			Account account = cId.getAccounts().get(i);
-
-			if (account.getAccountNumber().equals(acc.getAccountNumber())) {
+			acc1 = account.getAccountNumber();
+			if (acc1.equals(acc0)) {
 				Balance b = new Balance(-amount, balanceType, Bank.CURRENCY_LIST[balanceType] + 1);
-				currentBank.addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), Bank.TR_TRANSFER, b);
 				cId.getAccounts().set(i, acc);
 				break;
 			}
@@ -129,7 +130,8 @@ public class ATM {
 					updateCustomerAccDB(cId);
 					updateCustomerAccDB(cIds.get(i));
 					Balance b = new Balance(amount, balanceType, Bank.CURRENCY_LIST[balanceType] + 1);
-					currentBank.addTransaction(cIds.get(i).getIndex(), cIds.get(i).getName(), acc2, Bank.TR_TRANSFER,
+					currentBank.addTransaction(cId.getIndex(), cId.getName(), acc1, acc2, Bank.TR_TRANSFER, b);
+					currentBank.addTransaction(cIds.get(i).getIndex(), cIds.get(i).getName(), acc2, acc1, Bank.TR_TRANSFER,
 							b);
 					return;
 				}
@@ -231,15 +233,19 @@ public class ATM {
 	public boolean ifAccountDB(String accn) {
 		return currentBank.ifAccount(accn);
 	}
-	
+
 	public boolean ifSecurityDB(Account cur) {
 		return currentBank.ifSecurity(cur);
 	}
-	
-	public void addStockDB(Stock stock) {	
+
+	public void addStockDB(Stock stock) {
 		db.addStock(stock);
 //		return true;
-		
+
+	}
+
+	public ArrayList<Stock> getStocksDB() {
+		return db.getStocks();
 	}
 
 }

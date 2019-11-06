@@ -13,7 +13,7 @@ public class SecurityWin {
 	private JLabel  securityLabel;
 	private JLabel  savingLabel;
 	
-	private JPanel  blankPanel;
+	private JPanel  blankPanel,p1,p2;
 	private JPanel infoPanel;
 	private JPanel buyPanel;
 	private JPanel sellPanel;
@@ -42,13 +42,15 @@ public class SecurityWin {
 	
 	private void setSecurityWin() {
 		frame = new JFrame();
-		securityLabel = new JLabel("Security Account: ");
-		savingLabel = new JLabel("Saving Account: ");
+		securityLabel = new JLabel("Security Account: ");   //TODO  security account number
+		savingLabel = new JLabel("Saving Account: "); //TODO  saving account number
 		
 		infoPanel = new JPanel();
 		buyPanel = new JPanel();
 		sellPanel = new JPanel();
 		blankPanel = new JPanel();
+		p1 = new JPanel();
+		p2 = new JPanel();
 		
 		stockList = new JList<>();
 		boughtList = new JList<>();
@@ -70,10 +72,12 @@ public class SecurityWin {
 		frame.add(buyPanel);
 		frame.add(sellPanel);
 		
-	//	infoPanel.setLayout(new GridLayout(2, 1));
+		infoPanel.setLayout(new GridLayout(2, 1));
 		
-		infoPanel.add(securityLabel);  //TODO  security account number
-		infoPanel.add(savingLabel);  //TODO  security account number
+		infoPanel.add(p1);  
+		infoPanel.add(p2);  
+		p1.add(securityLabel);
+		p2.add(savingLabel);
 		
 		buyPanel.add(stockMarket);
 		buyPanel.add(stockList);
