@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost_3306
-Source Server Version : 50624
+Source Server Version : 80018
 Source Host           : localhost:3306
 Source Database       : atm
 
 Target Server Type    : MYSQL
-Target Server Version : 50624
+Target Server Version : 80018
 File Encoding         : 65001
 
-Date: 2019-11-05 21:02:07
+Date: 2019-11-06 16:57:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -219,10 +219,14 @@ CREATE TABLE `stockpricechange` (
 -- ----------------------------
 DROP TABLE IF EXISTS `transactiondetails`;
 CREATE TABLE `transactiondetails` (
-  `ID` varchar(20) NOT NULL COMMENT 'ID',
+  `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `OpAccountID` varchar(20) NOT NULL COMMENT 'the operation account ID ',
   `TargetAccountID` varchar(20) DEFAULT NULL COMMENT 'the target account ID, null if no target',
   `Amount` double NOT NULL COMMENT 'the amount of money being operated',
+  `CurrencyId` int(11) NOT NULL,
+  `Name` varchar(20) NOT NULL,
+  `CustomerId` int(11) NOT NULL,
+  `Info` varchar(100) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `OpAccountID` (`OpAccountID`),
   KEY `TargetAccountID` (`TargetAccountID`)
