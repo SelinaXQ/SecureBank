@@ -7,7 +7,6 @@ import JDBC.DB;
 public abstract class Bank {
 	public Bank(String name) {
 		this.name = name;
-		transactions = new ArrayList<Transaction>();
 		accountCount = 0;
 	}
 
@@ -43,9 +42,6 @@ public abstract class Bank {
 
 	protected String name;
 	protected DB db;
-//	protected ArrayList<ManagerID> managerIDs;
-//	protected ArrayList<CustomerID> customerIDs;
-	protected ArrayList<Transaction> transactions;
 
 	protected static float CHECKING_ACCOUNT_OPEN_FEE;
 	protected static float CHECKING_ACCOUNT_CLOSE_FEE;
@@ -78,9 +74,6 @@ public abstract class Bank {
 		this.name = name;
 	}
 
-	public void setTransactions(ArrayList<Transaction> transactions) {
-		this.transactions = transactions;
-	}
 
 	public abstract void createCustomer(String name, String username, String pwd, String address, String phone,
 			String collateral);
@@ -118,7 +111,7 @@ public abstract class Bank {
 
 	public void addTransaction(int cIdIndex, String name, String accNum, String tarNum, String info, Balance b) {
 		Transaction t = new Transaction(cIdIndex, name, accNum, tarNum, info, b);
-		transactions.add(t);
+		db.insertTransaction(t);
 	}
 
 	public void deposit(CustomerID cId, Account acc, double amount, int type) {
@@ -327,5 +320,6 @@ public abstract class Bank {
 	public abstract boolean ifSecurity(Account cur); // By database
 
 	public abstract ArrayList<Transaction> getTransactions(); // By database
+
 
 }
