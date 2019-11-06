@@ -374,4 +374,16 @@ public class DB {
 //		return true;
 		
 	}
+	
+	public ArrayList<Transaction> getTransactions(){
+		return null;
+		
+	}
+	
+	public ArrayList<Transaction> getTransaction(int cIdNum){
+		return null;
+		
+	}
+	
+	public ArrayList<Stock>
 }
