@@ -162,6 +162,7 @@ public class SCBank extends Bank {
 	@Override
 	public boolean ifSecurity(Account cur) {
 		//
+		//
 		return db.hasSecure(cur.getAccountNumber());
 	}
 
