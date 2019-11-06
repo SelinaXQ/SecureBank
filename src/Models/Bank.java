@@ -2,7 +2,6 @@ package Models;
 
 import java.util.ArrayList;
 
-
 import JDBC.DB;
 
 public abstract class Bank {
@@ -83,7 +82,6 @@ public abstract class Bank {
 		this.transactions = transactions;
 	}
 
-
 	public abstract void createCustomer(String name, String username, String pwd, String address, String phone,
 			String collateral);
 
@@ -118,8 +116,8 @@ public abstract class Bank {
 		b.setMoney(b.getMoney() - price);
 	}
 
-	public void addTransaction(int index, String name, String accNum, String info, Balance b) {
-		Transaction t = new Transaction(index, name, accNum, info, b);
+	public void addTransaction(int cIdIndex, String name, String accNum, String tarNum, String info, Balance b) {
+		Transaction t = new Transaction(cIdIndex, name, accNum, tarNum, info, b);
 		transactions.add(t);
 	}
 
@@ -152,7 +150,7 @@ public abstract class Bank {
 				cId.getAccounts().set(i, a);
 
 				Balance b = new Balance(amount, type, Bank.CURRENCY_LIST[type]);
-				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), info, b);
+				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), "", info, b);
 				charge(cId, TRANSACTION_FEE);
 				return;
 			}
@@ -189,7 +187,7 @@ public abstract class Bank {
 				cId.getAccounts().set(i, a);
 
 				Balance b = new Balance(amount, type, Bank.CURRENCY_LIST[type]);
-				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), info, b);
+				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), "", info, b);
 				charge(cId, WITHDRAWAL_FEE);
 				return;
 			}
@@ -212,7 +210,7 @@ public abstract class Bank {
 				cId.getAccounts().set(i, a);
 
 				Balance b = new Balance(amount, type, Bank.CURRENCY_LIST[type]);
-				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), info, b);
+				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), "", info, b);
 				charge(cId, TRANSACTION_FEE);
 				return;
 			}
@@ -242,7 +240,7 @@ public abstract class Bank {
 			}
 		}
 		Balance b = new Balance(-amount, type, Bank.CURRENCY_LIST[type]);
-		addTransaction(cId.getIndex(), cId.getName(), cAccount.getAccountNumber(), info, b);
+		addTransaction(cId.getIndex(), cId.getName(), cAccount.getAccountNumber(), "", info, b);
 		charge(cId, TRANSACTION_FEE);
 		return;
 
@@ -292,10 +290,8 @@ public abstract class Bank {
 		deleteCustomer(index);
 	}
 
-
-
 	public void getInterest(CustomerID cId, Account acc) {
-		
+
 		for (int i = 0; i < cId.getAccounts().size(); i++) {
 			Account a = cId.getAccounts().get(i);
 			if (a.getAccountNumber().equals(acc.getAccountNumber())) {
@@ -323,17 +319,15 @@ public abstract class Bank {
 	public abstract void updateCustomer(CustomerID cId); // By database
 
 	public abstract void updateCustomerAccs(int cIdIndex, ArrayList<Account> accs); // By database
-	
-	public abstract void deleteCustomer(int index);   // By database
 
-	public abstract boolean ifAccount(String accn);  // By database
-	
+	public abstract void deleteCustomer(int index); // By database
+
+	public abstract boolean ifAccount(String accn); // By database
+
 	public abstract boolean ifSecurity(Account cur); // By database
-	
+
 	public abstract ArrayList<Transaction> getTransactions(); // By database
-	
+
 	public abstract ArrayList<Transaction> getTransactionsByCId(CustomerID cId); // By database
-	
-	
 
 }

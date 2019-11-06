@@ -4,14 +4,38 @@ public class Transaction {
 	private String name;
 	private String info;
 	private Balance balance;
-	private String accountNumber;
+	private String operaAccNum;
+	private String targetAccNum;
 	private int cusID;
 	private int index;
 
-	public Transaction(int index, String name, String accNum, String info, Balance balance) {
+	public int getCusID() {
+		return cusID;
+	}
+
+	public void setCusID(int cusID) {
+		this.cusID = cusID;
+	}
+
+	public Transaction(int index, int cIdIndex, String name, String accNum, String tarNum, String info,
+			Balance balance) {
+		// for query
 		this.index = index;
+		this.cusID = cIdIndex;
 		this.name = name;
-		this.accountNumber = accNum;
+		this.operaAccNum = accNum;
+		this.targetAccNum = tarNum;
+		this.info = info;
+		this.balance = balance;
+	}
+	
+	public Transaction(int cIdIndex, String name, String accNum, String tarNum, String info,
+			Balance balance) {
+		// for insert
+		this.cusID = cIdIndex;
+		this.name = name;
+		this.operaAccNum = accNum;
+		this.targetAccNum = tarNum;
 		this.info = info;
 		this.balance = balance;
 	}
@@ -48,15 +72,34 @@ public class Transaction {
 		this.balance = balance;
 	}
 
-	public String getAccountNumber() {
-		return accountNumber;
+	public String getOperaAccNum() {
+		return operaAccNum;
 	}
 
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setOperaAccNum(String operaAccNum) {
+		this.operaAccNum = operaAccNum;
+	}
+
+	public String getTargetAccNum() {
+		return targetAccNum;
+	}
+
+	public void setTargetAccNum(String targetAccNum) {
+		this.targetAccNum = targetAccNum;
 	}
 
 	public String toString() {
-		return name + "     " + accountNumber + "     " + info + "     " + balance;
+		String inOrOut = null;
+		if (balance.getMoney() > 0) {
+			inOrOut = "from";
+		} else {
+			inOrOut = "to";
+		}
+		String s = " (" + inOrOut + " " + targetAccNum + ")";
+		if (targetAccNum.trim().equals("") || targetAccNum.trim().isEmpty()) {
+			return name + "     " + operaAccNum + "     " + info + "     " + balance;
+		} else {
+			return name + "     " + operaAccNum + "     " + info + s + "     " + balance;
+		}
 	}
 }

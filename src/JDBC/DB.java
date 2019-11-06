@@ -392,5 +392,19 @@ public class DB {
 		return null;
 	}
 	
-	// public 
+	public void insertTransaction(Transaction t) {
+		//TODO
+	}
+	
+	public void createCustomer(CustomerID cId) {
+		//TODO
+	}
+	
+	public void deleteCustomer(CustomerID cId) {
+		//TODO
+	}
+	
+	public void updateStockShares() {  // convey a class
+		// TODO
+	}
 }
