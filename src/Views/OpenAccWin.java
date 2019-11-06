@@ -125,7 +125,7 @@ public class OpenAccWin {
 				if (tf6.getText().trim().isEmpty() == false) {
 					collateral = tf6.getText();
 				}
-				atm.createCustomerID(name, userName, pwd, address, phone, collateral);
+				atm.createCustomerIdDB(name, userName, pwd, address, phone, collateral);
 				JOptionPane.showMessageDialog(null, "Your account has been created.", "Message",
 						JOptionPane.INFORMATION_MESSAGE);
 			}

@@ -43,40 +43,12 @@ public class CustomerWin {
 
 	private ATM atm;
 	
-	private int secureThreshold = 500;
-
-	public CustomerWin(ATM atm, int index, boolean flag, int win) {
-		this.atm = atm;
-		cId = this.atm.getCustomerID(index);
-		setCustomerWin(flag);
-		initComboBoxes();
-		initCustomerWin(win);
-		switch (win) {
-		case 0:
-			curAccount = cheAccounts.get(0);
-			break;
-		case 1:
-			curAccount = cheAccounts.get(0);
-			break;
-		case 2:
-			if (cb2 != null) {
-				curAccount = savAccounts.get(0);
-			}
-			break;
-		case 3:
-			if (cb3 != null) {
-				curAccount = loaAccounts.get(0);
-			}
-			break;
-		default:
-			break;
-		}
-		setUserRight(flag);
-	}
+	private int secureThreshold;
 
 	public CustomerWin(ATM atm, CustomerID cId, boolean flag, int win, int curAccIndex) {
 		this.atm = atm;
 		this.cId = cId;
+		this.secureThreshold = SCBank.SECURE_THRESOLD;
 		setCustomerWin(flag);
 		initComboBoxes();
 		initCustomerWin(win);

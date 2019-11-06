@@ -134,7 +134,7 @@ public class LoginWin {
 							JOptionPane.showMessageDialog(null, "Dear customer, username and password are not matched.",
 									"Message", JOptionPane.ERROR_MESSAGE);
 						} else {
-							atm.closeAccount(index);
+							atm.deleteCustomerDB(index);
 							JOptionPane.showMessageDialog(null, "All your information are removed. Here is your money.",
 									"Message", JOptionPane.INFORMATION_MESSAGE);
 						}

@@ -57,33 +57,6 @@ public class ATM {
 		return currentBank.getCustomers();
 	}
 
-	public String getManagerID(int index) {
-		ManagerID mId = currentBank.getManager(index);
-		return mId.getUserName();
-	}
-
-	public ArrayList<CustomerID> getCustomerIDs() {
-		return currentBank.getCustomers();
-	}
-
-	public CustomerID getCustomerID(int index) {
-		ArrayList<CustomerID> customerIDs = currentBank.getCustomers();
-		for (int i = 0; i < customerIDs.size(); i++) {
-			if (customerIDs.get(i).getIndex() == index) {
-				return customerIDs.get(i);
-			}
-		}
-		return null;
-	}
-
-	public void updateCustomerInfo(CustomerID cId) {
-		for (int i = 0; i < currentBank.getCustomers().size(); i++) {
-			CustomerID c = currentBank.getCustomers().get(i);
-			if (cId.getIndex() == c.getIndex()) {
-				currentBank.getCustomers().set(i, cId);
-			}
-		}
-	}
 
 	public void transaction(CustomerID cId, Account acc, int inOrOut, double amount, int type) {
 		int accType = acc.getType();
@@ -100,7 +73,6 @@ public class ATM {
 				currentBank.withdrawal(cId, acc, amount, type);
 			}
 		}
-		updateCustomerInfo(cId);
 		return;
 	}
 
@@ -165,19 +137,6 @@ public class ATM {
 
 	}
 
-	public boolean ifAccount(String s) {
-		boolean ifAcc = false;
-		ArrayList<CustomerID> cIds = currentBank.getCustomers();
-		for (int i = 0; i < cIds.size(); i++) {
-			for (int j = 0; j < cIds.get(i).getAccounts().size(); j++) {
-				Account account = cIds.get(i).getAccounts().get(j);
-				if (account.getAccountNumber().equals(s)) {
-					ifAcc = true;
-				}
-			}
-		}
-		return ifAcc;
-	}
 
 	public void loans(CustomerID cId, Account acc, int inOrOut, double amount, int type) {
 		if (inOrOut == 1) {
@@ -185,7 +144,6 @@ public class ATM {
 		} else if (inOrOut == 2) {
 			currentBank.returnLoans(cId, acc, amount, type);
 		}
-		updateCustomerInfo(cId);
 		return;
 
 	}
@@ -194,14 +152,14 @@ public class ATM {
 		currentBank.getInterest(cId, acc);
 	}
 
-	public ArrayList<Transaction> getTransactions(int index) {
+	public ArrayList<Transaction> getTransactionsDB(int cIdIndex) {
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 		trans.addAll(currentBank.getTransactions());
-		if (index == -1) {
+		if (cIdIndex == -1) {
 			return trans;
 		} else {
 			for (int i = 0; i < trans.size(); i++) {
-				if (trans.get(i).getIndex() != index) {
+				if (trans.get(i).getCusID() != cIdIndex) {
 					trans.remove(i);
 					i--;
 				}
@@ -210,12 +168,12 @@ public class ATM {
 		}
 	}
 
-	public void closeAccount(int index) {
-		currentBank.closeAccount(index);
+	public void deleteCustomerDB(int index) {
+		currentBank.deleteCustomer(index);
 
 	}
 
-	public void createCustomerID(String name, String userName, String pwd, String address, String phone,
+	public void createCustomerIdDB(String name, String userName, String pwd, String address, String phone,
 			String collateral) {
 		currentBank.createCustomer(name, userName, pwd, address, phone, collateral);
 	}

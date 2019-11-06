@@ -21,26 +21,8 @@ public class SCBank extends Bank {
 	public static final double SC_SAVING_INTEREST = 0.002;
 
 	public static final double SC_SAVING_INTEREST_THRESOLD = 5000;
-
-	public SCBank(String name) {
-		super(name);
-		CHECKING_ACCOUNT_OPEN_FEE = SC_CHECKING_ACCOUNT_OPEN_FEE;
-		CHECKING_ACCOUNT_CLOSE_FEE = SC_CHECKING_ACCOUNT_CLOSE_FEE;
-		SAVING_ACCOUNT_OPEN_FEE = SC_SAVING_ACCOUNT_OPEN_FEE;
-		SAVING_ACCOUNT_CLOSE_FEE = SC_SAVING_ACCOUNT_CLOSE_FEE;
-		LOANS_ACCOUNT_OPEN_FEE = SC_LOANS_ACCOUNT_OPEN_FEE;
-		LOANS_ACCOUNT_CLOSE_FEE = SC_LOANS_ACCOUNT_CLOSE_FEE;
-
-		TRANSACTION_FEE = SC_TRANSACTION_FEE;
-
-		LOANS_INTEREST = SC_LOANS_INTEREST;
-		SAVING_INTEREST = SC_SAVING_INTEREST;
-
-		SAVING_INTEREST_THRESOLD = SC_SAVING_INTEREST_THRESOLD;
-
-		// createCustomers();
-		// createManagers();
-	}
+	
+	public static final int SECURE_THRESOLD = 500;
 
 	public SCBank(String name, DB db) {
 		super(name);
@@ -144,8 +126,7 @@ public class SCBank extends Bank {
 
 	@Override
 	public void deleteCustomer(int index) {
-		// TODO Auto-generated method stub
-
+		db.deleteCustomer(index);
 	}
 
 	@Override
@@ -169,8 +150,4 @@ public class SCBank extends Bank {
 		return db.getTransactions();
 	}
 
-	@Override
-	public ArrayList<Transaction> getTransactionsByCId(CustomerID cId) {
-		return db.getTransactionByCId(cId.getIndex());
-	}
 }

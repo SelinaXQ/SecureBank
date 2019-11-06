@@ -20,7 +20,7 @@ public class ViewTransactionWin {
 
 	public ViewTransactionWin(ATM atm, int index) {
 		this.atm = atm;
-		transactions = atm.getTransactions(index);
+		transactions = atm.getTransactionsDB(index);
 		setViewTransactionWin();
 		initViewTransactionWin();
 	}

@@ -381,11 +381,6 @@ public class DB {
 		
 	}
 	
-	public ArrayList<Transaction> getTransactionByCId(int cIdNum){
-		//TODO
-		return null;
-		
-	}
 	
 	public ArrayList<Stock> getStocks(){
 		//TODO
@@ -400,7 +395,7 @@ public class DB {
 		//TODO
 	}
 	
-	public void deleteCustomer(CustomerID cId) {
+	public void deleteCustomer(int CIdIndex) {
 		//TODO
 	}
 	
