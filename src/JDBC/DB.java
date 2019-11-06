@@ -87,6 +87,7 @@ public class DB {
 				String stockName = pResultSet.getString(2);
 				Double stockPrice = pResultSet.getDouble(3);
 				res = new Stock(stockId, stockName, stockPrice);
+				
 			}
 
 		}catch (SQLException e) {
