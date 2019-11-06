@@ -235,3 +235,62 @@ CREATE TABLE `transactiondetails` (
 -- ----------------------------
 -- Records of transactiondetails
 -- ----------------------------
+
+
+-- ----------------------------
+-- CREATE OR REPLACE VIEW pricechanged
+-- ----------------------------
+CREATE OR REPLACE VIEW `pricechanged` AS
+    SELECT 
+        s.stockID AS ID, s.pricechanged
+    FROM
+        (SELECT 
+            t.stockID, t.pricechanged
+        FROM
+            (SELECT 
+            stockID, MAX(systime) latesttime
+        FROM
+            StockPriceChange
+        GROUP BY stockID) s, StockPriceChange t
+        WHERE
+            s.stockID = t.stockID
+                AND t.systime = s.latesttime) s;
+
+-- ----------------------------
+-- CREATE PROCEDURE StockPriceChange()
+-- ----------------------------
+CREATE DEFINER=`root`@`localhost` PROCEDURE `StockPriceChange`()
+BEGIN
+
+insert into StockPriceChange
+select null,sysdate(),ID,format(-0.2 + rand()*0.4,4) from StockInfo; 
+
+UPDATE StockInfo t 
+SET 
+    t.currentprice = t.currentprice * (SELECT 
+            (1 + s.pricechanged)
+        FROM
+            pricechanged s
+        WHERE
+            s.ID = t.ID)
+WHERE
+    EXISTS( SELECT 
+            1
+        FROM
+            pricechanged s
+        WHERE
+            s.ID = t.ID);
+
+UPDATE StockInfo t 
+SET 
+    t.currentprice = FORMAT(t.currentprice, 2);
+            
+END;
+
+-- ----------------------------
+-- CREATE EVENT changestockprice
+-- ----------------------------
+CREATE EVENT changestockprice
+    ON SCHEDULE EVERY 5 SECOND
+    DO
+      call StockPriceChange();
