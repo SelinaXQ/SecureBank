@@ -79,10 +79,6 @@ public abstract class Bank {
 		this.name = name;
 	}
 
-	public ArrayList<Transaction> getTransactions() {
-		return transactions;
-	}
-
 	public void setTransactions(ArrayList<Transaction> transactions) {
 		this.transactions = transactions;
 	}
@@ -334,9 +330,9 @@ public abstract class Bank {
 	
 	public abstract boolean ifSecurity(Account cur); // By database
 	
-	public abstract ArrayList<Transaction> geTransactions(); // By database
+	public abstract ArrayList<Transaction> getTransactions(); // By database
 	
-	public abstract ArrayList<Transaction> geTransactionByCId(CustomerID cId); // By database
+	public abstract ArrayList<Transaction> getTransactionsByCId(CustomerID cId); // By database
 	
 	
 
