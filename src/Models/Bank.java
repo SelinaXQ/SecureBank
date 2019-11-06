@@ -328,6 +328,4 @@ public abstract class Bank {
 
 	public abstract ArrayList<Transaction> getTransactions(); // By database
 
-	public abstract ArrayList<Transaction> getTransactionsByCId(CustomerID cId); // By database
-
 }

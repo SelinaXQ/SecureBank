@@ -21,6 +21,8 @@ public class SCBank extends Bank {
 	public static final double SC_SAVING_INTEREST = 0.002;
 
 	public static final double SC_SAVING_INTEREST_THRESOLD = 5000;
+	
+	public static final int SECURE_THRESOLD = 500;
 
 	public SCBank(String name) {
 		super(name);
@@ -144,8 +146,7 @@ public class SCBank extends Bank {
 
 	@Override
 	public void deleteCustomer(int index) {
-		// TODO Auto-generated method stub
-
+		db.deleteCustomer(index);
 	}
 
 	@Override
@@ -169,8 +170,4 @@ public class SCBank extends Bank {
 		return db.getTransactions();
 	}
 
-	@Override
-	public ArrayList<Transaction> getTransactionsByCId(CustomerID cId) {
-		return db.getTransactionByCId(cId.getIndex());
-	}
 }
