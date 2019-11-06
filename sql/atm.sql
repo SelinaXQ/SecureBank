@@ -259,6 +259,7 @@ CREATE OR REPLACE VIEW `pricechanged` AS
 -- ----------------------------
 -- CREATE PROCEDURE StockPriceChange()
 -- ----------------------------
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `StockPriceChange`()
 BEGIN
 
@@ -285,7 +286,8 @@ UPDATE StockInfo t
 SET 
     t.currentprice = FORMAT(t.currentprice, 2);
             
-END;
+END$$
+DELIMITER ;
 
 -- ----------------------------
 -- CREATE EVENT changestockprice
