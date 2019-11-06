@@ -235,5 +235,11 @@ public class ATM {
 	public boolean ifSecurityDB(Account cur) {
 		return currentBank.ifSecurity(cur);
 	}
+	
+	public void addStockDB(Stock stock) {	
+		db.addStock(stock);
+//		return true;
+		
+	}
 
 }
