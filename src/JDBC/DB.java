@@ -1,8 +1,7 @@
 package JDBC;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 import Models.*;
 
@@ -73,6 +72,28 @@ public class DB {
 		}
 		return accs;
 
+	}
+	
+	//get specific stock by its id
+	public Stock getStock(String id){
+		
+		String sql = "select * from stockinfo where ID=" + id;
+		ResultSet pResultSet = null;
+		Stock res = null;
+		try {
+			pResultSet = mHelper.query(sql);
+			while(pResultSet.next()) {
+				String stockId = pResultSet.getString(1);
+				String stockName = pResultSet.getString(2);
+				Double stockPrice = pResultSet.getDouble(3);
+				res = new Stock(stockId, stockName, stockPrice);
+				//res.add
+			}
+
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 	private HashMap<Integer, Balance> getBalances(String accNum, int cId) {
@@ -173,10 +194,10 @@ public class DB {
 		return mID;
 	}
 
-	public Stock getStocks() { // getCustomerID By index
-		return null;
-
-	}
+//	public Stock getStocks() { // getCustomerID By index
+//		return null;
+//
+//	}
 
 	public int ifCustomerID(String username, String pwd) {
 
@@ -306,7 +327,7 @@ public class DB {
 		return mHelper.getCount(sql);
 	}
 	
-public boolean hasSecure(String savId) {
+	public boolean hasSecure(String savId) {
 		
 //		String sql = "select ID from managerinfo where username='" + username + "' and password='" + pwd + "'";
 //		ResultSet pResultSet = null;
@@ -328,4 +349,29 @@ public boolean hasSecure(String savId) {
 		return false;
 	}
 
+	public void addStock(Stock stock) {
+		
+		String stockId = stock.getId();
+		String name = stock.getStockName();
+		Double price = stock.getPrice();
+		
+		Stock checkStock = getStock(stockId);
+		if(checkStock != null) {
+			System.out.println("Already have the same ID!");
+//			return false;
+		}else {
+			
+			String sql = "Insert into stockinfo values ('" + stockId + "', '" + name + "'," + price + ")";
+			try {
+				mHelper.update(sql);
+				System.out.println("Succeed add a stock!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+	
+//		return true;
+		
+	}
 }

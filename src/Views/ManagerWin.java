@@ -14,9 +14,9 @@ public class ManagerWin {
 	private GridBagLayout gbLayout;
 	private GridBagConstraints gbc;
 
-	private JButton findInfo, viewTrans, viewTransByID, bt1, bt2;
-	private JLabel headlineL1, headlineL2, lb, lb1, lb2, lb3, lb4;
-	private JTextField customerTF, tf1, tf2, tf3, tf4;
+	private JButton findInfo, viewTrans, viewTransByID, deleteStockButton, addStockButton;
+	private JLabel headlineL1, headlineL2, lb, lb1, stockIdLabel, stockCompanyLabel, stockPriceLabel;
+	private JTextField customerTF, tf1, stockIdField, stockCompanyField, stockPriceField;
 	private JList<String> cList;
 	private JList<String> sList;
 	private JPanel p, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12;
@@ -112,17 +112,17 @@ public class ManagerWin {
 
 	private void initPanel2() {
 
-		bt1 = new JButton("Delete this Stock");
-		bt2 = new JButton("Add this Stock");
+		deleteStockButton = new JButton("Delete this Stock");
+		addStockButton = new JButton("Add this Stock");
 		tf1 = new JTextField(25);
-		tf2 = new JTextField(15);
-		tf3 = new JTextField(15);
-		tf4 = new JTextField(15);
+		stockIdField = new JTextField(15);
+		stockCompanyField = new JTextField(15);
+		stockPriceField = new JTextField(15);
 		lb = new JLabel("Stocks: ");
 		lb1 = new JLabel("Create a stock:  ");
-		lb2 = new JLabel("Stock 's ID: ");
-		lb3 = new JLabel("Company/Name: ");
-		lb4 = new JLabel("Price/per: ");
+		stockIdLabel = new JLabel("Stock 's ID: ");
+		stockCompanyLabel = new JLabel("Company/Name: ");
+		stockPriceLabel = new JLabel("Price/per: ");
 
 		p5.setLayout(new GridLayout(10, 1));
 		p5.add(p6);
@@ -134,20 +134,64 @@ public class ManagerWin {
 		p5.add(p9);
 		p5.add(p10);
 		p5.add(p11);
-		p5.add(bt2);
+		p5.add(addStockButton);
 
 		p7.add(tf1);
-		p7.add(bt1);
+		p7.add(deleteStockButton);
 
-		p9.add(lb2);
-		p9.add(tf2);
+		p9.add(stockIdLabel);
+		p9.add(stockIdField);
 
-		p10.add(lb3);
-		p10.add(tf3);
+		p10.add(stockCompanyLabel);
+		p10.add(stockCompanyField);
 
-		p11.add(lb4);
-		p11.add(tf4);
+		p11.add(stockPriceLabel);
+		p11.add(stockPriceField);
 
+		
+		addStockButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String stockId = stockIdField.getText();
+//				System.out.println("stockId:" + stockId + "!");
+				String stockCompany = stockCompanyField.getText();
+				String stockPriceStr = stockPriceField.getText();
+//				Double price = Double.valueOf();
+				
+				if(stockId == null || stockId.equals("") || stockCompany == null|| stockCompany.equals("") || stockPriceStr == null || stockPriceStr.equals("")) {
+//					System.out.println("null");
+					JOptionPane.showMessageDialog(null, "Please fill in all the fields", "Message", JOptionPane.ERROR_MESSAGE);
+				}else {
+					Double price = Double.valueOf(stockPriceStr);
+					Stock newStock = new Stock(stockId, stockCompany, price);
+					
+					atm.addStockDB(newStock);
+					
+					JOptionPane.showMessageDialog(null, "Succeed!");
+					
+					stockIdField.setText("");
+					stockCompanyField.setText("");
+					stockPriceField.setText("");
+				}
+				
+				
+				
+			}
+			
+		});
+		
+		deleteStockButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
 	}
 
 	private void initPanel1() {
