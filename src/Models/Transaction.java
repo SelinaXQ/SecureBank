@@ -5,6 +5,7 @@ public class Transaction {
 	private String info;
 	private Balance balance;
 	private String accountNumber;
+	private int cusID;
 	private int index;
 
 	public Transaction(int index, String name, String accNum, String info, Balance balance) {
