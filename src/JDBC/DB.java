@@ -77,7 +77,7 @@ public class DB {
 	//get specific stock by its id
 	public Stock getStock(String id){
 		
-		String sql = "select * from stockinfo where ID=" + id;
+		String sql = "select * from stockinfo where ID = '" + id + "'";
 		ResultSet pResultSet = null;
 		Stock res = null;
 		try {
