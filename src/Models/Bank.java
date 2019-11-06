@@ -333,5 +333,11 @@ public abstract class Bank {
 	public abstract boolean ifAccount(String accn);  // By database
 	
 	public abstract boolean ifSecurity(Account cur); // By database
+	
+	public abstract ArrayList<Transaction> geTransactions(); // By database
+	
+	public abstract ArrayList<Transaction> geTransactionByCId(CustomerID cId); // By database
+	
+	
 
 }

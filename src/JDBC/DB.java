@@ -376,14 +376,19 @@ public class DB {
 	}
 	
 	public ArrayList<Transaction> getTransactions(){
+		//TODO
 		return null;
 		
 	}
 	
-	public ArrayList<Transaction> getTransaction(int cIdNum){
+	public ArrayList<Transaction> getTransactionByCId(int cIdNum){
+		//TODO
 		return null;
 		
 	}
 	
-	public ArrayList<Stock>
+	public ArrayList<Stock> getStocks(){
+		//TODO
+		return null;
+	}
 }

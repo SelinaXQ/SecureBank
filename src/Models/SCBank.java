@@ -161,8 +161,16 @@ public class SCBank extends Bank {
 	
 	@Override
 	public boolean ifSecurity(Account cur) {
-		// TODO Auto-generated method stub
 		return db.hasSecure(cur.getAccountNumber());
-//		return false;
+	}
+
+	@Override
+	public ArrayList<Transaction> geTransactions() {
+		return db.getTransactions();
+	}
+
+	@Override
+	public ArrayList<Transaction> geTransactionByCId(CustomerID cId) {
+		return db.getTransactionByCId(cId.getIndex());
 	}
 }
