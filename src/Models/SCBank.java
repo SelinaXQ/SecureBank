@@ -57,6 +57,7 @@ public class SCBank extends Bank {
 		cId.setPhone(phone);
 		cId.setCollateral(collateral);
 		createCheckingAccount(cId);
+		db.createCustomer(cId);
 		Account acc = cId.getAccounts().get(0);
 		HashMap<Integer, Balance> bs = acc.getBalances();
 		for (Balance b : bs.values()) {
