@@ -126,12 +126,12 @@ public class SCBank extends Bank {
 	}
 
 	@Override
-	public void deleteCustomer(int index) {
+	public void deleteCustomer(int index) { // By database
 		db.deleteCustomer(index);
 	}
 
 	@Override
-	public boolean ifAccount(String accn) {
+	public boolean ifAccount(String accn) { // By database
 		boolean flag = false;
 		Account account = null;
 		account = db.getAccount(accn);
@@ -142,12 +142,12 @@ public class SCBank extends Bank {
 	}
 	
 	@Override
-	public boolean ifSecurity(Account cur) {
+	public boolean ifSecurity(Account cur) { // By database
 		return db.hasSecure(cur.getAccountNumber());
 	}
 
 	@Override
-	public ArrayList<Transaction> getTransactions() {
+	public ArrayList<Transaction> getTransactions() { // By database
 		return db.getTransactions();
 	}
 
