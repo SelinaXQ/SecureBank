@@ -29,9 +29,9 @@ public class ManagerWin {
 	private SharedListSelectionHandler listener1;
 	private FindCustomerListener listener2;
 	private FindTransactionListener listener3;
+	private StockListSelectionHanlder listener4;
 
 	private ATM atm;
-
 
 	public ManagerWin(ATM atm, ManagerID mId) {
 		this.atm = atm;
@@ -51,6 +51,7 @@ public class ManagerWin {
 		listener1 = new SharedListSelectionHandler();
 		listener2 = new FindCustomerListener();
 		listener3 = new FindTransactionListener();
+		listener4 = new StockListSelectionHanlder();
 
 		headlineL1 = new JLabel(welcomeInfo);
 		headlineL2 = new JLabel("All customers: ");
@@ -62,7 +63,11 @@ public class ManagerWin {
 		customerTF = new JTextField(15);
 
 		String[] customerStr = new String[customers.size()];
-		String[] stockStr = new String[stocks.size()];
+		if (stocks != null) {
+			String[] stockStr = new String[stocks.size()];
+			sList = new JList<String>(stockStr);
+			sList.addListSelectionListener(listener4);
+		}
 
 		for (int j = 0; j < customers.size(); j++) {
 			CustomerID cId = customers.get(j);
@@ -71,7 +76,6 @@ public class ManagerWin {
 
 		cList = new JList<String>(customerStr);
 
-		sList = new JList<String>(stockStr);
 
 		p1 = new JPanel();
 		p2 = new JPanel();
@@ -144,7 +148,6 @@ public class ManagerWin {
 		p11.add(stockPriceLabel);
 		p11.add(stockPriceField);
 
-		
 		addStockButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -155,39 +158,41 @@ public class ManagerWin {
 				String stockCompany = stockCompanyField.getText();
 				String stockPriceStr = stockPriceField.getText();
 //				Double price = Double.valueOf();
-				
-				if(stockId == null || stockId.equals("") || stockCompany == null|| stockCompany.equals("") || stockPriceStr == null || stockPriceStr.equals("")) {
+
+				if (stockId == null || stockId.equals("") || stockCompany == null || stockCompany.equals("")
+						|| stockPriceStr == null || stockPriceStr.equals("")) {
 //					System.out.println("null");
-					JOptionPane.showMessageDialog(null, "Please fill in all the fields", "Message", JOptionPane.ERROR_MESSAGE);
-				}else {
+					JOptionPane.showMessageDialog(null, "Please fill in all the fields", "Message",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
 					Double price = Double.valueOf(stockPriceStr);
 					Stock newStock = new Stock(stockId, stockCompany, price);
-					
+
 					atm.addStockDB(newStock);
-					
+
 					JOptionPane.showMessageDialog(null, "Succeed!");
-					
+
 					stockIdField.setText("");
 					stockCompanyField.setText("");
 					stockPriceField.setText("");
 				}
-				
-				
-				
+
 			}
-			
+
 		});
-		
+
 		deleteStockButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				// delete a stock by tf1 's text
+				//
+
 			}
-			
+
 		});
-		
+
 	}
 
 	private void initPanel1() {
@@ -307,6 +312,15 @@ public class ManagerWin {
 		public void valueChanged(ListSelectionEvent e) {
 			int j = cList.getSelectedIndex();
 			customerTF.setText(customers.get(j).getName());
+		}
+	}
+
+	class StockListSelectionHanlder implements ListSelectionListener {
+
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			int j = sList.getSelectedIndex();
+			tf1.setText(stocks.get(j).getStockName());
 		}
 	}
 
