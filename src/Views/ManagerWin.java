@@ -194,25 +194,9 @@ public class ManagerWin {
 					stockPriceField.setText("");
 					
 					//after add we need to update stock list.
-//					stocks = atm.getStocksDB();
-//					System.out.println("stocks new size:" + stocks.size());
 					String stockInfo = stockId + "   " + stockCompany + "   " + price;
 					model.addElement(stockInfo);
 					
-					
-//					String[] stockStr = new String[stocks.size()];
-//					if (stocks != null) {
-//						
-//						for(int i = 0 ; i < stocks.size(); i++) {
-//							Stock curStock = stocks.get(i);
-//							String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
-//							System.out.println(stockInfo);
-//							//stockStr[i] = stockInfo;
-//						}
-//						
-//						//sList.addListSelectionListener(listener4);
-//					}
-//					sList = new JList<String>(stockStr);
 				}
 
 			}
