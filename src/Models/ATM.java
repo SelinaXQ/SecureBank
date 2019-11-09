@@ -201,6 +201,10 @@ public class ATM {
 //		return true;
 
 	}
+	
+	public void deleteStockDB(String stockId) {
+		db.deleteStock(stockId);
+	}
 
 	public ArrayList<Stock> getStocksDB() {
 		return db.getStocks();

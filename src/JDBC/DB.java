@@ -371,8 +371,18 @@ public class DB {
 			}
 			
 		}
+		
+	}
 	
-//		return true;
+	public void deleteStock(String stockId) {
+		
+		String sql = "delete from stockinfo where id = '" + stockId +"'";
+		try {
+			mHelper.update(sql);
+			System.out.println("Succeed delete a stock");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

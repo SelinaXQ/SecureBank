@@ -12,12 +12,13 @@ import javax.swing.event.*;
 public class ManagerWin {
 	private JFrame frame;
 	DefaultListModel<String> model = new DefaultListModel<String>();
+	int deleteId = -1;
 	private GridBagLayout gbLayout;
 	private GridBagConstraints gbc;
 
 	private JButton findInfo, viewTrans, viewTransByID, deleteStockButton, addStockButton;
 	private JLabel headlineL1, headlineL2, stockMarketLabel, createStockLabel, stockIdLabel, stockCompanyLabel, stockPriceLabel;
-	private JTextField customerTF, tf1, stockIdField, stockCompanyField, stockPriceField;
+	private JTextField customerTF, deleteStockIdField, stockIdField, stockCompanyField, stockPriceField;
 	private JList<String> cList;
 	private JList<String> sList;
 	private JPanel p, p1, p2, p3, p4, p5, stockListPanel, deleteStockPanel, p8, stockIdPanel, stockCompanyPanel, stockPricePanel, p12;
@@ -126,7 +127,8 @@ public class ManagerWin {
 
 		deleteStockButton = new JButton("Delete this Stock");
 		addStockButton = new JButton("Add this Stock");
-		tf1 = new JTextField(25);
+		deleteStockIdField = new JTextField(25);
+		deleteStockIdField.setEditable(false);
 		stockIdField = new JTextField(15);
 		stockCompanyField = new JTextField(15);
 		stockPriceField = new JTextField(15);
@@ -151,7 +153,7 @@ public class ManagerWin {
 		
 		stockListPanel.add(sList);
 
-		deleteStockPanel.add(tf1);
+		deleteStockPanel.add(deleteStockIdField);
 		deleteStockPanel.add(deleteStockButton);
 
 		stockIdPanel.add(stockIdLabel);
@@ -209,7 +211,14 @@ public class ManagerWin {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				// delete a stock by tf1 's text
-				//
+				String stockId = deleteStockIdField.getText();
+				if(stockId != null || !stockId.equals("")) {
+					
+					atm.deleteStockDB(stockId);
+					JOptionPane.showMessageDialog(null, "Succeed!");
+					//update list
+					model.remove(deleteId);
+				}
 
 			}
 
@@ -344,7 +353,8 @@ public class ManagerWin {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			int j = sList.getSelectedIndex();
-			tf1.setText(stocks.get(j).getStockName());
+			deleteStockIdField.setText(stocks.get(j).getId());
+			deleteId = j;
 		}
 	}
 
