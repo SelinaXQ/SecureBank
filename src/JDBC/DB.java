@@ -350,7 +350,7 @@ public class DB {
 		return false;
 	}
 
-	public void addStock(Stock stock) {
+	public boolean addStock(Stock stock) {
 		
 		String stockId = stock.getId();
 		String name = stock.getStockName();
@@ -359,7 +359,7 @@ public class DB {
 		Stock checkStock = getStock(stockId);
 		if(checkStock != null) {
 			System.out.println("Already have the same ID!");
-//			return false;
+			return false;
 		}else {
 			
 			String sql = "Insert into stockinfo values ('" + stockId + "', '" + name + "'," + price + ")";
@@ -370,6 +370,7 @@ public class DB {
 				e.printStackTrace();
 			}
 			
+			return true;
 		}
 		
 	}
@@ -384,6 +385,16 @@ public class DB {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void modifyStockPrice(String stockId, Double modifyPrice) {
+		String sql = "Update stockinfo set CurrentPrice = " + modifyPrice + " where id = '" + stockId + "'";
+		try {
+			mHelper.update(sql);
+			System.out.println("Succeed modify the price!");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public ArrayList<Transaction> getTransactions(){

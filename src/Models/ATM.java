@@ -196,8 +196,15 @@ public class ATM {
 		return currentBank.ifSecurity(cur);
 	}
 
-	public void addStockDB(Stock stock) {
-		db.addStock(stock);
+	public boolean addStockDB(Stock stock) {
+		if(db.addStock(stock)) {
+			return true;
+		}else {
+			return false;
+		}
+			
+		
+		
 //		return true;
 
 	}
@@ -206,6 +213,9 @@ public class ATM {
 		db.deleteStock(stockId);
 	}
 
+	public void modifyStockPriceDB(String stockId, Double modifyPrice) {
+		db.modifyStockPrice(stockId, modifyPrice);
+	}
 	public ArrayList<Stock> getStocksDB() {
 		return db.getStocks();
 	}

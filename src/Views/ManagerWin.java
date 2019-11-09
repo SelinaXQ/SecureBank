@@ -13,15 +13,16 @@ public class ManagerWin {
 	private JFrame frame;
 	DefaultListModel<String> model = new DefaultListModel<String>();
 	int deleteId = -1;
+	double deletePrice = -1;
 	private GridBagLayout gbLayout;
 	private GridBagConstraints gbc;
 
-	private JButton findInfo, viewTrans, viewTransByID, deleteStockButton, addStockButton;
+	private JButton findInfo, viewTrans, viewTransByID, deleteStockButton, addStockButton, modifyPriceButton;
 	private JLabel headlineL1, headlineL2, stockMarketLabel, createStockLabel, stockIdLabel, stockCompanyLabel, stockPriceLabel;
-	private JTextField customerTF, deleteStockIdField, stockIdField, stockCompanyField, stockPriceField;
+	private JTextField customerTF, deleteStockIdField, stockIdField, stockCompanyField, stockPriceField, modifyPriceField;
 	private JList<String> cList;
 	private JList<String> sList;
-	private JPanel p, p1, p2, p3, p4, p5, stockListPanel, deleteStockPanel, p8, stockIdPanel, stockCompanyPanel, stockPricePanel, p12;
+	private JPanel p, p1, p2, p3, p4, p5, stockListPanel, deleteStockPanel, p8, stockIdPanel, stockCompanyPanel, stockPricePanel, p12, deleteModifyButtonPanel;
 	private JTabbedPane tabbedPane;
 
 	private ArrayList<CustomerID> customers;
@@ -100,6 +101,7 @@ public class ManagerWin {
 		stockListPanel = new JPanel();
 		p8 = new JPanel();
 		deleteStockPanel = new JPanel();
+		deleteModifyButtonPanel = new JPanel();
 		stockIdPanel = new JPanel();
 		stockCompanyPanel = new JPanel();
 		stockPricePanel = new JPanel();
@@ -128,9 +130,11 @@ public class ManagerWin {
 	private void initPanel2() {
 
 		deleteStockButton = new JButton("Delete this Stock");
+		modifyPriceButton = new JButton("Modify price");
 		addStockButton = new JButton("Add this Stock");
-		deleteStockIdField = new JTextField(25);
+		deleteStockIdField = new JTextField(10);
 		deleteStockIdField.setEditable(false);
+		modifyPriceField = new JTextField(10);
 		stockIdField = new JTextField(15);
 		stockCompanyField = new JTextField(15);
 		stockPriceField = new JTextField(15);
@@ -140,12 +144,13 @@ public class ManagerWin {
 		stockCompanyLabel = new JLabel("Company/Name: ");
 		stockPriceLabel = new JLabel("Price/per: ");
 
-		p5.setLayout(new GridLayout(10, 1));
+		p5.setLayout(new GridLayout(11, 1));
 		
 		p5.add(stockMarketLabel);
 		p5.add(stockListPanel);
 		p5.add(p12);
 		p5.add(deleteStockPanel);
+		p5.add(deleteModifyButtonPanel);
 		p5.add(createStockLabel);
 		p5.add(p8);
 		p5.add(stockIdPanel);
@@ -155,8 +160,13 @@ public class ManagerWin {
 		
 		stockListPanel.add(sList);
 
+		
+		
 		deleteStockPanel.add(deleteStockIdField);
-		deleteStockPanel.add(deleteStockButton);
+		deleteStockPanel.add(modifyPriceField);
+		
+		deleteModifyButtonPanel.add(deleteStockButton);
+		deleteModifyButtonPanel.add(modifyPriceButton);
 
 		stockIdPanel.add(stockIdLabel);
 		stockIdPanel.add(stockIdField);
@@ -189,26 +199,32 @@ public class ManagerWin {
 					Double price = Double.valueOf(stockPriceStr);
 					Stock newStock = new Stock(stockId, stockCompany, price);
 
-					atm.addStockDB(newStock);
+					if(atm.addStockDB(newStock)) {
+						JOptionPane.showMessageDialog(null, "Succeed!");
 
-					JOptionPane.showMessageDialog(null, "Succeed!");
-
-					stockIdField.setText("");
-					stockCompanyField.setText("");
-					stockPriceField.setText("");
-					
-					//after add we need to update stock list.
-					stocks = atm.getStocksDB();
-					String[] stockStr = new String[stocks.size()];
-					for(int i = 0 ; i < stocks.size(); i++) {
-						Stock curStock = stocks.get(i);
-						String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
-						stockStr[i] = stockInfo;
+						stockIdField.setText("");
+						stockCompanyField.setText("");
+						stockPriceField.setText("");
+						
+						//after add we need to update stock list.
+						stocks = atm.getStocksDB();
+						String[] stockStr = new String[stocks.size()];
+						for(int i = 0 ; i < stocks.size(); i++) {
+							Stock curStock = stocks.get(i);
+							String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
+							stockStr[i] = stockInfo;
+						}
+						
+//						String stockInfo = stockId + "   " + stockCompany + "   " + price;
+//						model.addElement(stockInfo);
+						sList.setListData(stockStr);
+					}else {
+						JOptionPane.showMessageDialog(null, "Already have this ID!");
+						
 					}
 					
-//					String stockInfo = stockId + "   " + stockCompany + "   " + price;
-//					model.addElement(stockInfo);
-					sList.setListData(stockStr);
+
+					
 					
 				}
 
@@ -238,15 +254,42 @@ public class ManagerWin {
 					
 					sList.setListData(stockStr);
 					deleteStockIdField.setText("");
-//					deleteId = -1;
-					//update list
-//					model.remove(deleteId);
 				}
 
 			}
 
 		});
 		
+		modifyPriceButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				String stockId = deleteStockIdField.getText();
+				Double modifyPrice = Double.valueOf(modifyPriceField.getText());
+				
+				if(stockId != null || !stockId.equals("")) {
+					
+					atm.modifyStockPriceDB(stockId, modifyPrice);
+					JOptionPane.showMessageDialog(null, "Succeed!");
+					//update list
+					stocks = atm.getStocksDB();
+					String[] stockStr = new String[stocks.size()];
+					for(int i = 0 ; i < stocks.size(); i++) {
+						Stock curStock = stocks.get(i);
+						String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
+						stockStr[i] = stockInfo;
+					}
+					
+					sList.setListData(stockStr);
+//					deleteStockIdField.setText("");
+				}
+				
+				
+			}
+			
+		});
 		
 
 	}
@@ -377,6 +420,7 @@ public class ManagerWin {
 		public void valueChanged(ListSelectionEvent e) {
 			int j = sList.getSelectedIndex();
 			deleteStockIdField.setText(stocks.get(j).getId());
+			modifyPriceField.setText(String.valueOf(stocks.get(j).getPrice()));
 			deleteId = j;
 		}
 	}
