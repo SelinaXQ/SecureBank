@@ -11,7 +11,7 @@ import javax.swing.event.*;
 
 public class ManagerWin {
 	private JFrame frame;
-	DefaultListModel model = new DefaultListModel();
+	DefaultListModel<String> model = new DefaultListModel<String>();
 	private GridBagLayout gbLayout;
 	private GridBagConstraints gbc;
 
