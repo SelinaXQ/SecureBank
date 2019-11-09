@@ -11,15 +11,16 @@ import javax.swing.event.*;
 
 public class ManagerWin {
 	private JFrame frame;
+	DefaultListModel model = new DefaultListModel();
 	private GridBagLayout gbLayout;
 	private GridBagConstraints gbc;
 
 	private JButton findInfo, viewTrans, viewTransByID, deleteStockButton, addStockButton;
-	private JLabel headlineL1, headlineL2, lb, lb1, stockIdLabel, stockCompanyLabel, stockPriceLabel;
+	private JLabel headlineL1, headlineL2, stockMarketLabel, createStockLabel, stockIdLabel, stockCompanyLabel, stockPriceLabel;
 	private JTextField customerTF, tf1, stockIdField, stockCompanyField, stockPriceField;
 	private JList<String> cList;
 	private JList<String> sList;
-	private JPanel p, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12;
+	private JPanel p, p1, p2, p3, p4, p5, stockListPanel, deleteStockPanel, p8, stockIdPanel, stockCompanyPanel, stockPricePanel, p12;
 	private JTabbedPane tabbedPane;
 
 	private ArrayList<CustomerID> customers;
@@ -63,17 +64,28 @@ public class ManagerWin {
 		customerTF = new JTextField(15);
 
 		String[] customerStr = new String[customers.size()];
+		String[] stockStr = new String[stocks.size()];
 		if (stocks != null) {
-			String[] stockStr = new String[stocks.size()];
-			sList = new JList<String>(stockStr);
-			sList.addListSelectionListener(listener4);
+//			System.out.println("inside null");
+//			System.out.println("stock size: " + stocks.size());
+			
+			for(int i = 0 ; i < stocks.size(); i++) {
+				Stock curStock = stocks.get(i);
+				String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
+//				System.out.println(stockInfo);
+				model.addElement(stockInfo);
+				stockStr[i] = stockInfo;
+			}
+			//add stocks	
 		}
+		
+		sList = new JList<String>(model);
 
 		for (int j = 0; j < customers.size(); j++) {
 			CustomerID cId = customers.get(j);
 			customerStr[j] = cId.getUserName() + "    " + cId.getName() + "    " + cId.getIndex();
 		}
-
+		
 		cList = new JList<String>(customerStr);
 
 
@@ -82,12 +94,12 @@ public class ManagerWin {
 		p3 = new JPanel();
 		p4 = new JPanel();
 		p5 = new JPanel();
-		p6 = new JPanel();
+		stockListPanel = new JPanel();
 		p8 = new JPanel();
-		p7 = new JPanel();
-		p9 = new JPanel();
-		p10 = new JPanel();
-		p11 = new JPanel();
+		deleteStockPanel = new JPanel();
+		stockIdPanel = new JPanel();
+		stockCompanyPanel = new JPanel();
+		stockPricePanel = new JPanel();
 		p12 = new JPanel();
 
 		p = (JPanel) frame.getContentPane();
@@ -118,35 +130,40 @@ public class ManagerWin {
 		stockIdField = new JTextField(15);
 		stockCompanyField = new JTextField(15);
 		stockPriceField = new JTextField(15);
-		lb = new JLabel("Stocks market: ");
-		lb1 = new JLabel("Create a new stock:  ");
+		stockMarketLabel = new JLabel("Stocks market: ");
+		createStockLabel = new JLabel("Create a new stock:  ");
 		stockIdLabel = new JLabel("Stock 's ID: ");
 		stockCompanyLabel = new JLabel("Company/Name: ");
 		stockPriceLabel = new JLabel("Price/per: ");
 
 		p5.setLayout(new GridLayout(10, 1));
-		p5.add(p6);
-		p5.add(lb);
+		
+		p5.add(stockMarketLabel);
+		p5.add(stockListPanel);
 		p5.add(p12);
-		p5.add(p7);
-		p5.add(lb1);
+		p5.add(deleteStockPanel);
+		p5.add(createStockLabel);
 		p5.add(p8);
-		p5.add(p9);
-		p5.add(p10);
-		p5.add(p11);
+		p5.add(stockIdPanel);
+		p5.add(stockCompanyPanel);
+		p5.add(stockPricePanel);
 		p5.add(addStockButton);
+		
+		stockListPanel.add(sList);
 
-		p7.add(tf1);
-		p7.add(deleteStockButton);
+		deleteStockPanel.add(tf1);
+		deleteStockPanel.add(deleteStockButton);
 
-		p9.add(stockIdLabel);
-		p9.add(stockIdField);
+		stockIdPanel.add(stockIdLabel);
+		stockIdPanel.add(stockIdField);
 
-		p10.add(stockCompanyLabel);
-		p10.add(stockCompanyField);
+		stockCompanyPanel.add(stockCompanyLabel);
+		stockCompanyPanel.add(stockCompanyField);
 
-		p11.add(stockPriceLabel);
-		p11.add(stockPriceField);
+		stockPricePanel.add(stockPriceLabel);
+		stockPricePanel.add(stockPriceField);
+		
+		sList.addListSelectionListener(listener4);
 
 		addStockButton.addActionListener(new ActionListener() {
 
@@ -175,6 +192,27 @@ public class ManagerWin {
 					stockIdField.setText("");
 					stockCompanyField.setText("");
 					stockPriceField.setText("");
+					
+					//after add we need to update stock list.
+//					stocks = atm.getStocksDB();
+//					System.out.println("stocks new size:" + stocks.size());
+					String stockInfo = stockId + "   " + stockCompany + "   " + price;
+					model.addElement(stockInfo);
+					
+					
+//					String[] stockStr = new String[stocks.size()];
+//					if (stocks != null) {
+//						
+//						for(int i = 0 ; i < stocks.size(); i++) {
+//							Stock curStock = stocks.get(i);
+//							String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
+//							System.out.println(stockInfo);
+//							//stockStr[i] = stockInfo;
+//						}
+//						
+//						//sList.addListSelectionListener(listener4);
+//					}
+//					sList = new JList<String>(stockStr);
 				}
 
 			}
@@ -192,6 +230,8 @@ public class ManagerWin {
 			}
 
 		});
+		
+		
 
 	}
 

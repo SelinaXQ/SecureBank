@@ -275,6 +275,7 @@ public class DB {
 		return cIDs;
 	}
 
+	
 	public void updateCustomerInfo(CustomerID cId) {
 		String add = cId.getAddress();
 		String password = cId.getPassword();
@@ -384,7 +385,27 @@ public class DB {
 	
 	public ArrayList<Stock> getStocks(){
 		//TODO
-		return null;
+		String sql = "Select * from stockinfo";
+		ResultSet pResultSet = null;
+		ArrayList<Stock> stockArr = new ArrayList<Stock>();
+		try {
+			pResultSet = mHelper.query(sql);
+
+			while (pResultSet.next()) {
+
+				String stockId = pResultSet.getString(1);
+				String stockName = pResultSet.getString(2);
+				double currentPrice = pResultSet.getDouble(3);
+				Stock stock = new Stock(stockId, stockName, currentPrice);
+				stockArr.add(stock);
+			}
+			pResultSet.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+//		System.out.println("Stock size:" + stockArr.size());
+		return stockArr;
 	}
 	
 	public void insertTransaction(Transaction t) {
