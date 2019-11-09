@@ -7,7 +7,10 @@ public class MySQLHelper {
 	public static final String url = "jdbc:mysql://localhost:3306/atm?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"; 
 	public static final String name = "com.mysql.cj.jdbc.Driver"; 
 	public static final String user = "root"; 
-	public static final String password = ""; 
+	public static final String password = "Selina0414"; 
+	
+	//alter table stockpricechange add constraint FK_stockpricechange_stockinfo foreign key stockpricechange(stockID) references stockinfo(ID) on delete cascade;
+
 
 	public Connection connection = null; 
 	public PreparedStatement preparedStatement = null; 

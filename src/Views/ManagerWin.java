@@ -66,6 +66,7 @@ public class ManagerWin {
 
 		String[] customerStr = new String[customers.size()];
 		String[] stockStr = new String[stocks.size()];
+//		ArrayList<String> stockInfoList = new ArrayList<String>();
 		if (stocks != null) {
 //			System.out.println("inside null");
 //			System.out.println("stock size: " + stocks.size());
@@ -74,13 +75,14 @@ public class ManagerWin {
 				Stock curStock = stocks.get(i);
 				String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
 //				System.out.println(stockInfo);
-				model.addElement(stockInfo);
+//				model.addElement(stockInfo);
+//				stockInfoList.add(stockInfo);
 				stockStr[i] = stockInfo;
 			}
 			//add stocks	
 		}
 		
-		sList = new JList<String>(model);
+		sList = new JList<String>(stockStr);
 
 		for (int j = 0; j < customers.size(); j++) {
 			CustomerID cId = customers.get(j);
@@ -196,8 +198,17 @@ public class ManagerWin {
 					stockPriceField.setText("");
 					
 					//after add we need to update stock list.
-					String stockInfo = stockId + "   " + stockCompany + "   " + price;
-					model.addElement(stockInfo);
+					stocks = atm.getStocksDB();
+					String[] stockStr = new String[stocks.size()];
+					for(int i = 0 ; i < stocks.size(); i++) {
+						Stock curStock = stocks.get(i);
+						String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
+						stockStr[i] = stockInfo;
+					}
+					
+//					String stockInfo = stockId + "   " + stockCompany + "   " + price;
+//					model.addElement(stockInfo);
+					sList.setListData(stockStr);
 					
 				}
 
@@ -217,7 +228,19 @@ public class ManagerWin {
 					atm.deleteStockDB(stockId);
 					JOptionPane.showMessageDialog(null, "Succeed!");
 					//update list
-					model.remove(deleteId);
+					stocks = atm.getStocksDB();
+					String[] stockStr = new String[stocks.size()];
+					for(int i = 0 ; i < stocks.size(); i++) {
+						Stock curStock = stocks.get(i);
+						String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
+						stockStr[i] = stockInfo;
+					}
+					
+					sList.setListData(stockStr);
+					deleteStockIdField.setText("");
+//					deleteId = -1;
+					//update list
+//					model.remove(deleteId);
 				}
 
 			}
