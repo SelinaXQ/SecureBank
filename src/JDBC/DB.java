@@ -659,9 +659,32 @@ public class DB {
 
     public void createCustomer(CustomerID cId) {
         //TODO
+        int id = cId.getIndex();
+        String username = cId.getUserName();
+        String password = cId.getPassword();
+        String address =cId.getAddress();
+        String phoneNo = cId.getPhone();
+        String name = cId.getName();
+        String collateral = cId.getCollateral();
+
+        String insertTransSql = "insert into customerinfo values("
+                + id + ", '" + name + "', '" + address + "', '" + password + "', '" + username + "', '" + phoneNo + "', '" + collateral + "')";
+        try {
+            mHelper.update(insertTransSql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void deleteCustomer(int CIdIndex) {
+        String sql = "delete from customerinfo where id = " + CIdIndex + "";
+        try {
+            mHelper.update(sql);
+            System.out.println("Succeed delete a stock");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //TODO
     }
 
