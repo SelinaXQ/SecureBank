@@ -545,7 +545,6 @@ public class DB {
 		if(exist) {
 			
 			System.out.println("current stock exists!");
-//			String sql = "Update stockinfo set CurrentPrice = " + modifyPrice + " where id = '" + stockId + "'";
 			
 			String sqlAddShare = "Update sharesinfo set ShareNumber = " + (shareHas + shareNumber) + " where SecId = '" + secureId + "' and StockId = '" + stockId + "'";
 			try {
@@ -579,13 +578,53 @@ public class DB {
 		
 		try {
 			while(pResultSet.next()) {
-				res.add(pResultSet.getString(3));
+				res.add(pResultSet.getString(3) + "   " + pResultSet.getInt(4));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return res;
+	}
+	
+	public ArrayList<String> getStockInfoAmountFromSecure(String secureId) {
+		ArrayList<String> res = new ArrayList<>();
+//		select * from sharesinfo, stockinfo where sharesinfo.stockId = stockInfo.ID;
+//		select * from sharesinfo, stockinfo where sharesinfo.SecId = "2" and sharesinfo.stockId = stockInfo.ID;
+		String sql = "Select * from stockinfo, sharesinfo where sharesinfo.SecID = '" + secureId + "' and sharesinfo.stockId = stockInfo.ID";
+		ResultSet pResultSet = null;
+		pResultSet = mHelper.query(sql);
+		
+		try {
+			while(pResultSet.next()) {
+				res.add(pResultSet.getString(1) + "   " + pResultSet.getString(2)+ "   " + pResultSet.getString(3) + "   " + pResultSet.getInt(7));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public void deleteShareInfo(String secureId, String stockId) {
+		String sql = "delete from sharesinfo where SecID = '" + secureId + "' and StockID = '" + stockId + "'";
+        try {
+            mHelper.update(sql);
+            System.out.println("Succeed delete!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+	}
+	
+	public void modifyShareInfo(String secureId, String stockId, int currentAmount) {
+		
+		String sqlModifyShare = "Update sharesinfo set ShareNumber = " + currentAmount + " where SecId = '" + secureId + "' and StockId = '" + stockId + "'";
+		try {
+            mHelper.update(sqlModifyShare);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
     public void insertTransaction(Transaction t) {
@@ -603,6 +642,10 @@ public class DB {
     public void updateStockShares() {  // convey a class
         // TODO
     }
+
+	
+
+	
 
 	
 }

@@ -44,6 +44,7 @@ public class SecurityWin {
 	private JButton backButton;
 	
 	private int curBuyListId;
+	private String curSellStockInfo;
 	
 	private ATM atm;
 	private CustomerID cId;
@@ -113,8 +114,17 @@ public class SecurityWin {
 			}
 			//add stocks	
 		}
-		
 		stockList = new JList<String>(stockStr);
+		
+		ArrayList<String> boughtStockInfoList = atm.getStockInfoAmountFromSecureDB(secureId);
+		String[] stockStr2 = new String[boughtStockInfoList.size()];
+		for(int i = 0 ; i < boughtStockInfoList.size(); i++) {
+			String stockInfo = boughtStockInfoList.get(i);
+			stockStr2[i] = stockInfo;
+		}
+		boughtList = new JList<String>(stockStr2);
+		
+		
 	}
 	
 	
@@ -175,27 +185,17 @@ public class SecurityWin {
 					atm.buySharesDB(secureId, stockId, buyAmount);
 					
 					//boughtList add one 
-					ArrayList<String> secureStockId= atm.getStockIdFromSecureDB(secureId);
-					Set<String> stockSet = new HashSet<>();
-					stockSet.addAll(secureStockId);
-					stocks = atm.getStocksDB();
-					String[] stockStr = new String[stocks.size()];
-					for(int i = 0 ; i < stocks.size(); i++) {
-						Stock curStock = stocks.get(i);
-						if(stockSet.contains(curStock.getId())){
-							String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice() + "   " + buyAmount;					
-							stockStr[i] = stockInfo;
-						}	
+					ArrayList<String> boughtStockInfoList = atm.getStockInfoAmountFromSecureDB(secureId);
+					String[] stockStr = new String[boughtStockInfoList.size()];
+					for(int i = 0 ; i < boughtStockInfoList.size(); i++) {
+						String stockInfo = boughtStockInfoList.get(i);
+						stockStr[i] = stockInfo;
 					}
 					boughtList.setListData(stockStr);
-					//minus account balance
+					//minus account balance		
 					
 					
 				}
-				
-				
-				
-				
 
 			}
 			
@@ -205,7 +205,48 @@ public class SecurityWin {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				String[] infoStr = curSellStockInfo.split("  ");
+//				System.out.println(infoStr.length);
+				String stockId = infoStr[0].trim();
+				int shareAmount = Integer.valueOf(infoStr[3].trim());
+				System.out.println("stockId" + stockId);
+				System.out.println("shareAmount" + shareAmount);
+//				sellAmountField
+				if(sellAmountField.getText() == null || sellAmountField.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter how many shares you want to sell!");
+				}else {
+					int sellAmount = Integer.valueOf(sellAmountField.getText());
+					if(sellAmount > shareAmount) {
+						JOptionPane.showMessageDialog(null, "Please enter an integer less than your current amount!");
+					}else if(sellAmount == shareAmount) {//delete info in sharesinfo
+						
+						atm.deleteShareInfoDB(secureId, stockId);
+						//update list
+						ArrayList<String> boughtStockInfoList = atm.getStockInfoAmountFromSecureDB(secureId);
+						String[] stockStr2 = new String[boughtStockInfoList.size()];
+						for(int i = 0 ; i < boughtStockInfoList.size(); i++) {
+							String stockInfo = boughtStockInfoList.get(i);
+							stockStr2[i] = stockInfo;
+						}
+						JOptionPane.showMessageDialog(null, "Sell succeed!");
+						boughtList.setListData(stockStr2);
+						
+					}else {//modify info in sharesinfo
+						
+						int currentAmount = shareAmount - sellAmount;
+						atm.modifyShareInfoDB(secureId, stockId, currentAmount);
+						//update list
+						ArrayList<String> boughtStockInfoList = atm.getStockInfoAmountFromSecureDB(secureId);
+						String[] stockStr2 = new String[boughtStockInfoList.size()];
+						for(int i = 0 ; i < boughtStockInfoList.size(); i++) {
+							String stockInfo = boughtStockInfoList.get(i);
+							stockStr2[i] = stockInfo;
+						}
+						JOptionPane.showMessageDialog(null, "Sell succeed!");
+						boughtList.setListData(stockStr2);
+						
+					}
+				}
 			}
 			
 		});
@@ -235,6 +276,16 @@ public class SecurityWin {
 			
 		});
 		
+		boughtList.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				curSellStockInfo = boughtList.getSelectedValue();
+				
+			}
+			
+		});
 		
 		frame.setTitle("Stock Market");
 		frame.setSize(500, 600);

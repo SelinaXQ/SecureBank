@@ -233,4 +233,16 @@ public class ATM {
 		return db.getStockIdFromSecure(secureId);
 	}
 	
+	public ArrayList<String> getStockInfoAmountFromSecureDB(String secureId){
+		return db.getStockInfoAmountFromSecure(secureId);
+	}
+	
+	public void deleteShareInfoDB(String secureId, String stockId) {
+		db.deleteShareInfo(secureId, stockId);
+	}
+
+	public void modifyShareInfoDB(String secureId, String stockId, int currentAmount) {
+		db.modifyShareInfo(secureId, stockId, currentAmount);
+		
+	}
 }

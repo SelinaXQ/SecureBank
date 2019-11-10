@@ -209,8 +209,6 @@ public class ManagerWin {
 							stockStr[i] = stockInfo;
 						}
 						
-//						String stockInfo = stockId + "   " + stockCompany + "   " + price;
-//						model.addElement(stockInfo);
 						sList.setListData(stockStr);
 					}else {
 						JOptionPane.showMessageDialog(null, "Already have this ID!");
