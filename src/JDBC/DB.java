@@ -16,7 +16,7 @@ public class DB {
         // get accounts ID By accountnumber
         Account acc = null;
         String sql = "select * from accountinfo where ID=" + acnumber;
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         try {
             pResultSet = mHelper.query(sql);
 
@@ -48,8 +48,8 @@ public class DB {
         // get accounts ID By customer id(index)
 
         String sql = "select * from accountinfo where custID=" + id;
-        ResultSet pResultSet = null;
-        ArrayList<Account> accs = new ArrayList<Account>();
+        ResultSet pResultSet;
+        ArrayList<Account> accs = new ArrayList<>();
         try {
             pResultSet = mHelper.query(sql);
 
@@ -78,7 +78,7 @@ public class DB {
     public Stock getStock(String id) {
 
         String sql = "select * from stockinfo where ID = '" + id + "'";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         Stock res = null;
         try {
             pResultSet = mHelper.query(sql);
@@ -98,9 +98,9 @@ public class DB {
 
     private HashMap<Integer, Balance> getBalances(String accNum, int cId) {
 
-        HashMap<Integer, Balance> balances = new HashMap<Integer, Balance>();
+        HashMap<Integer, Balance> balances = new HashMap<>();
         String sql = "select CurrencyID,money from accountinfo where custID=" + cId + " and id='" + accNum + "'";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
 
         try {
             pResultSet = mHelper.query(sql);
@@ -122,7 +122,7 @@ public class DB {
 
     private String getCurrencyType(int currencyID) {
         String sql = "select name from currencytype where ID=" + currencyID;
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         String currType = null;
         try {
             pResultSet = mHelper.query(sql);
@@ -144,7 +144,7 @@ public class DB {
         // getCustomerID By index
 
         String sql = "select * from customerinfo where id=" + id;
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         CustomerID cID = null;
         try {
             pResultSet = mHelper.query(sql);
@@ -175,7 +175,7 @@ public class DB {
         // getManagerID By index
 
         String sql = "select * from managerinfo where id=" + id;
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         ManagerID mID = null;
         try {
             pResultSet = mHelper.query(sql);
@@ -204,7 +204,7 @@ public class DB {
         // check db if this username and pwd could match a customer ID
 
         String sql = "select ID from customerinfo where username='" + username + "' and password='" + pwd + "'";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         int id = 0;
         try {
             pResultSet = mHelper.query(sql);
@@ -226,7 +226,7 @@ public class DB {
         // check db if this username and pwd could match a manager ID
 
         String sql = "select ID from managerinfo where username='" + username + "' and password='" + pwd + "'";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         int id = 0;
         try {
             pResultSet = mHelper.query(sql);
@@ -248,8 +248,8 @@ public class DB {
 
         ArrayList<CustomerID> cIDs = new ArrayList<CustomerID>();
         String sql = "select * from customerinfo";
-        ResultSet pResultSet = null;
-        CustomerID cID = null;
+        ResultSet pResultSet;
+        CustomerID cID;
         try {
             pResultSet = mHelper.query(sql);
 
@@ -389,8 +389,8 @@ public class DB {
     public ArrayList<Transaction> getTransactions() {
         //TODO
         String sql = "SELECT id,opaccountid,targetaccountid,amount,currencyid,name,customerid,info FROM transactiondetails";
-        ResultSet tResultSet = null;
-        ArrayList<Transaction> transArr = new ArrayList<Transaction>();
+        ResultSet tResultSet;
+        ArrayList<Transaction> transArr = new ArrayList<>();
         try {
             tResultSet = mHelper.query(sql);
 
@@ -411,7 +411,7 @@ public class DB {
 
                 String currencyName = null;
                 if (tResultSet.next()) {
-                    currencyName = tResultSet.getString(1);
+                    currencyName = cResultSet.getString(1);
                 }
                 //create balance instance
                 Balance newBalance = new Balance(amount, curID, currencyName);
@@ -433,8 +433,8 @@ public class DB {
     public ArrayList<Stock> getStocks() {
         //TODO
         String sql = "Select * from stockinfo";
-        ResultSet pResultSet = null;
-        ArrayList<Stock> stockArr = new ArrayList<Stock>();
+        ResultSet pResultSet;
+        ArrayList<Stock> stockArr = new ArrayList<>();
         try {
             pResultSet = mHelper.query(sql);
 
@@ -459,7 +459,7 @@ public class DB {
     public boolean hasBindingSecurityAccount(String savingId) {
 
         String sql = "select * from securityinfo where AccountId = '" + savingId + "'";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         pResultSet = mHelper.query(sql);
         boolean hasSecure = false;
 
@@ -502,7 +502,7 @@ public class DB {
 
     public String getSecureId(String savingId) {
         String sql = "select * from securityinfo where AccountId = '" + savingId + "'";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         pResultSet = mHelper.query(sql);
         String secureId = "";
         try {
@@ -525,7 +525,7 @@ public class DB {
     public void buyShares(String secureId, String stockId, int shareNumber) {
 
         String sqlModify = "Select * from sharesinfo where SecId = '" + secureId + "' and StockId = '" + stockId + "'";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         pResultSet = mHelper.query(sqlModify);
         boolean exist = false;
         int shareHas = 0;
@@ -578,7 +578,7 @@ public class DB {
     public ArrayList<String> getStockIdFromSecure(String secureId) {
         ArrayList<String> res = new ArrayList<>();
         String sql = "Select * from sharesinfo where SecID = '" + secureId + "'";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         pResultSet = mHelper.query(sql);
 
         try {
@@ -597,7 +597,7 @@ public class DB {
 //		select * from sharesinfo, stockinfo where sharesinfo.stockId = stockInfo.ID;
 //		select * from sharesinfo, stockinfo where sharesinfo.SecId = "2" and sharesinfo.stockId = stockInfo.ID;
         String sql = "Select * from stockinfo, sharesinfo where sharesinfo.SecID = '" + secureId + "' and sharesinfo.stockId = stockInfo.ID";
-        ResultSet pResultSet = null;
+        ResultSet pResultSet;
         pResultSet = mHelper.query(sql);
 
         try {
