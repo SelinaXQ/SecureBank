@@ -314,28 +314,7 @@ public class DB {
 		String sql = "Select * from accountinfo";
 		return mHelper.getCount(sql);
 	}
-//	
-//	public boolean hasSecure(String savId) {
-//		
-////		String sql = "select ID from managerinfo where username='" + username + "' and password='" + pwd + "'";
-////		ResultSet pResultSet = null;
-////		int id = 0;
-////		try {
-////			pResultSet = mHelper.query(sql);
-////
-////			while (pResultSet.next()) {
-////				id = pResultSet.getInt(1);
-////				System.out.println(id);
-////			}
-////			pResultSet.close();
-////
-////		} catch (SQLException e) {
-////			e.printStackTrace();
-////		}
-////		return id;
-//		
-//		return false;
-//	}
+
 
     public void updateAccount(Account acc, Balance b) {
         String id = acc.getAccountNumber();
@@ -356,27 +335,6 @@ public class DB {
         return mHelper.getCount(sql);
     }
 
-    public boolean hasSecure(String savId) {
-
-//		String sql = "select ID from managerinfo where username='" + username + "' and password='" + pwd + "'";
-//		ResultSet pResultSet = null;
-//		int id = 0;
-//		try {
-//			pResultSet = mHelper.query(sql);
-//
-//			while (pResultSet.next()) {
-//				id = pResultSet.getInt(1);
-//				System.out.println(id);
-//			}
-//			pResultSet.close();
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return id;
-
-        return false;
-    }
 
     public boolean addStock(Stock stock) {
 
@@ -511,6 +469,7 @@ public class DB {
 					e.printStackTrace();
 				}
 			}
+			pResultSet.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -535,6 +494,99 @@ public class DB {
 		}
 		
 	}	
+	
+	public String getSecureId(String savingId) {
+		String sql = "select * from securityinfo where AccountId = '" + savingId + "'";
+		ResultSet pResultSet = null;
+		pResultSet = mHelper.query(sql);
+		String secureId = "";
+		try {
+			while(pResultSet.next()) {
+				try {
+					secureId = pResultSet.getString(1);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			pResultSet.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return secureId;
+	}
+	
+	public void buyShares(String secureId, String stockId, int shareNumber) {
+		
+		String sqlModify = "Select * from sharesinfo where SecId = '" + secureId + "' and StockId = '" + stockId + "'";
+		ResultSet pResultSet = null;
+		pResultSet = mHelper.query(sqlModify);
+		boolean exist = false;
+		int shareHas = 0;
+		try {
+			while(pResultSet.next()) {
+				try {
+					if(!pResultSet.getString(1).isEmpty()) {
+						exist = true;
+						shareHas = pResultSet.getInt(4);
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			pResultSet.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(exist) {
+			
+			System.out.println("current stock exists!");
+//			String sql = "Update stockinfo set CurrentPrice = " + modifyPrice + " where id = '" + stockId + "'";
+			
+			String sqlAddShare = "Update sharesinfo set ShareNumber = " + (shareHas + shareNumber) + " where SecId = '" + secureId + "' and StockId = '" + stockId + "'";
+			try {
+	            mHelper.update(sqlAddShare);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+			
+		}else {
+			String sql = "Select * from sharesinfo";
+			int sharesCnt = mHelper.getCount(sql);
+			
+			String newShareId = String.valueOf(sharesCnt + 1);
+			
+			String sqlInsert = "Insert into sharesinfo values ('" + newShareId + "', '" + secureId + "', '" + stockId + "', " + shareNumber + ")";
+			try {
+				mHelper.update(sqlInsert);
+				System.out.println("Succeed add a share record!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public ArrayList<String> getStockIdFromSecure(String secureId) {
+		ArrayList<String> res = new ArrayList<>();
+		String sql = "Select * from sharesinfo where SecID = '" + secureId + "'";
+		ResultSet pResultSet = null;
+		pResultSet = mHelper.query(sql);
+		
+		try {
+			while(pResultSet.next()) {
+				res.add(pResultSet.getString(3));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
 
     public void insertTransaction(Transaction t) {
         //TODO
@@ -551,4 +603,6 @@ public class DB {
     public void updateStockShares() {  // convey a class
         // TODO
     }
+
+	
 }

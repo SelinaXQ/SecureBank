@@ -192,9 +192,6 @@ public class ATM {
 		return currentBank.ifAccount(accn);
 	}
 
-//	public boolean ifSecurityDB(Account cur) {
-//		return currentBank.ifSecurity(cur);
-//	}
 
 	public boolean addStockDB(Stock stock) {
 		if(db.addStock(stock)) {
@@ -202,10 +199,6 @@ public class ATM {
 		}else {
 			return false;
 		}
-			
-		
-		
-//		return true;
 
 	}
 	
@@ -228,4 +221,16 @@ public class ATM {
 		db.addSecurity(savingId);
 	}
 
+	public String getSecureIdDB(String savingId) {
+		return db.getSecureId(savingId);
+	}
+	
+	public void buySharesDB(String secureId, String stockId, int shareNumber) {
+		db.buyShares(secureId, stockId, shareNumber);
+	}
+	
+	public ArrayList<String> getStockIdFromSecureDB(String secureId){
+		return db.getStockIdFromSecure(secureId);
+	}
+	
 }

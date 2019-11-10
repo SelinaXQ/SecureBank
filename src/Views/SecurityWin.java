@@ -4,6 +4,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -25,32 +27,39 @@ public class SecurityWin {
 	private JPanel infoPanel;
 	private JPanel buyPanel;
 	private JPanel sellPanel;
-	private JPanel buyButtonPanel, boughtPanel, sellButtonPanel, stockMarketPanel;
+	private JPanel buyButtonPanel, boughtPanel, sellButtonPanel, stockMarketPanel, buyAmountPanel, sellAmountPanel;
 	private JList<String> stockList;
 	private JList<String> boughtList;
 	private ArrayList<Stock> stocks;
 	
 	private JLabel stockMarket;
 	private JLabel boughtStock;
+	private JLabel buyAmountLabel;
+	private JTextField buyAmountField;
+	private JLabel sellAmountLabel;
+	private JTextField sellAmountField;
 	
 	private JButton buyButton;
 	private JButton sellButton;
 	private JButton backButton;
 	
+	private int curBuyListId;
+	
 	private ATM atm;
 	private CustomerID cId;
 	private Account acc;
 	private int curAccIndex;
-	
+	private String secureId;
 	
 	public SecurityWin(ATM atm, CustomerID cId, Account acc, int curAccIndex) {
 		
 		this.atm = atm;
 		this.cId = cId;
 		this.atm = atm;
+		this.acc = acc;
 		this.curAccIndex = curAccIndex;
 		stocks = atm.getStocksDB();
-		
+		secureId = atm.getSecureIdDB(acc.getAccountNumber());
 		
 		setSecurityWin();
 		initSecurityWin();
@@ -64,11 +73,18 @@ public class SecurityWin {
 		securityLabel = new JLabel("Security Account: ");   //TODO  security account number
 		savingLabel = new JLabel("Saving Account: "); //TODO  saving account number
 		
+		buyAmountLabel = new JLabel("How many shares: ");
+		buyAmountField = new JTextField(10);
+		sellAmountLabel = new JLabel("How many shares: ");
+		sellAmountField = new JTextField(10);
+		
 		infoPanel = new JPanel();
 		buyPanel = new JPanel();
 		sellPanel = new JPanel();
 		blankPanel = new JPanel();
 		stockMarketPanel = new JPanel();
+		buyAmountPanel = new JPanel();
+		sellAmountPanel = new JPanel();
 		
 		buyButtonPanel = new JPanel();
 		boughtPanel = new JPanel();
@@ -103,14 +119,16 @@ public class SecurityWin {
 	
 	
 	private void initSecurityWin() {
-		frame.setLayout(new GridLayout(6, 1));
+		frame.setLayout(new GridLayout(8, 1));
 //		frame.add(blankPanel);
 //		frame.add(infoPanel);
 		frame.add(stockMarketPanel);
 		frame.add(buyPanel);
+		frame.add(buyAmountPanel);
 		frame.add(buyButtonPanel);
 		frame.add(boughtPanel);
 		frame.add(sellPanel);
+		frame.add(sellAmountPanel);
 		frame.add(sellButtonPanel);
 		
 		
@@ -124,12 +142,16 @@ public class SecurityWin {
 		
 //		buyPanel.add(stockMarket);
 		buyPanel.add(stockList);
+		buyAmountPanel.add(buyAmountLabel);
+		buyAmountPanel.add(buyAmountField);
 		
 		buyButtonPanel.add(buyButton);
 		
 		
 		boughtPanel.add(boughtStock);
 		sellPanel.add(boughtList);
+		sellAmountPanel.add(sellAmountLabel);
+		sellAmountPanel.add(sellAmountField);
 		sellButtonPanel.add(backButton);
 		sellButtonPanel.add(sellButton);
 		
@@ -142,7 +164,39 @@ public class SecurityWin {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				String stockId = stocks.get(curBuyListId).getId();
+//				acc
+				if(buyAmountField.getText() == null || buyAmountField.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter how many shares you want to buy!");
+				}else {
+					int buyAmount = Integer.valueOf(buyAmountField.getText());
+					//check current sharesinfo
+					//add a new record to sharesinfo
+					atm.buySharesDB(secureId, stockId, buyAmount);
+					
+					//boughtList add one 
+					ArrayList<String> secureStockId= atm.getStockIdFromSecureDB(secureId);
+					Set<String> stockSet = new HashSet<>();
+					stockSet.addAll(secureStockId);
+					stocks = atm.getStocksDB();
+					String[] stockStr = new String[stocks.size()];
+					for(int i = 0 ; i < stocks.size(); i++) {
+						Stock curStock = stocks.get(i);
+						if(stockSet.contains(curStock.getId())){
+							String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice() + "   " + buyAmount;					
+							stockStr[i] = stockInfo;
+						}	
+					}
+					boughtList.setListData(stockStr);
+					//minus account balance
+					
+					
+				}
 				
+				
+				
+				
+
 			}
 			
 		});
@@ -169,19 +223,21 @@ public class SecurityWin {
 			
 		});
 		
-//		stockList.addListSelectionListener(new ListSelectionListener() {
-//
-//			@Override
-//			public void valueChanged(ListSelectionEvent e) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//			
-//		});
+		stockList.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				curBuyListId = stockList.getSelectedIndex();
+				//String stockId = stocks.get(curBuyListId).getId();
+				
+			}
+			
+		});
 		
 		
 		frame.setTitle("Stock Market");
-		frame.setSize(500, 400);
+		frame.setSize(500, 600);
 		frame.setLocation(500, 250);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
