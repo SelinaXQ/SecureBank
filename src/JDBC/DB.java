@@ -634,6 +634,8 @@ public class DB {
 
     public void insertTransaction(Transaction t) {
         //TODO
+
+        //get the information of transaction
         String name = t.getName();
         String info = t.getInfo();
         Balance balance = t.getBalance();
@@ -641,6 +643,7 @@ public class DB {
         String targetAccNum = t.getTargetAccNum();
         int cusID = t.getCusID();
 
+        //get the information of balance
         double money = balance.getMoney();
         int curID = balance.getCurID();
 
