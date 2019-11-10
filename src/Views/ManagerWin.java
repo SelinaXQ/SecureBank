@@ -67,17 +67,11 @@ public class ManagerWin {
 
 		String[] customerStr = new String[customers.size()];
 		String[] stockStr = new String[stocks.size()];
-//		ArrayList<String> stockInfoList = new ArrayList<String>();
 		if (stocks != null) {
-//			System.out.println("inside null");
-//			System.out.println("stock size: " + stocks.size());
 			
 			for(int i = 0 ; i < stocks.size(); i++) {
 				Stock curStock = stocks.get(i);
 				String stockInfo = curStock.getId() + "   " + curStock.getStockName() + "   " + curStock.getPrice();					
-//				System.out.println(stockInfo);
-//				model.addElement(stockInfo);
-//				stockInfoList.add(stockInfo);
 				stockStr[i] = stockInfo;
 			}
 			//add stocks	

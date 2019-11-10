@@ -143,7 +143,7 @@ public abstract class Bank {
 				cId.getAccounts().set(i, a);
 
 				Balance b = new Balance(amount, type, Bank.CURRENCY_LIST[type]);
-				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), "", info, b);
+//				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), "", info, b);
 				charge(cId, TRANSACTION_FEE);
 				return;
 			}
@@ -317,7 +317,7 @@ public abstract class Bank {
 
 	public abstract boolean ifAccount(String accn); // By database
 
-	public abstract boolean ifSecurity(Account cur); // By database
+//	public abstract boolean ifSecurity(Account cur); // By database
 
 	public abstract ArrayList<Transaction> getTransactions(); // By database
 

@@ -745,8 +745,16 @@ public class CustomerWin {
 				
 				
 				System.out.println("button click");
-				if(canOpen(curAccount) ) {//|| hasSecure((SavingAccount)curAccount) ) {
-					new SecurityWin();
+				if(canOpen(curAccount) || hasSecure(curAccount) ) {//|| hasSecure((SavingAccount)curAccount) ) {
+					
+					if(!hasSecure(curAccount)) {
+						//if no secure account, new a secure account and put it into db
+						addSecure(curAccount);	
+						JOptionPane.showMessageDialog(null, "Succeed open a security account, now you can trade stocks");
+					}
+					
+					new SecurityWin(atm, cId, curAccount, cb2.getSelectedIndex());
+					
 					frame.dispose();
 				}else {
 					JOptionPane.showMessageDialog(null, "Your do not have enough money to open a security account! Your balance should larger than 500!");
@@ -889,23 +897,32 @@ public class CustomerWin {
 		return flag;
 	}
 	
-	//check if this saving account can open a secuiry account
-		public boolean canOpen(Account cur) {
-			if(cur.getBalances().get(1).getMoney() > secureThreshold) {
-				return true;
-			}
+	//check if this saving account can open a security account
+	public boolean canOpen(Account cur) {
+		if(cur.getBalances().get(1).getMoney() > secureThreshold) {
+			return true;
+		}
+		return false;
+	}
+		
+		
+	public boolean hasSecure(Account cur) {
+			//
+		String savingNum = cur.getAccountNumber();
+		if(atm.hasBindingSecurityAccountDB(savingNum)){
+			System.out.println("has secure");
+			return true;
+		}else {
+			System.out.println("no secure");
 			return false;
 		}
+	}
+	
+	public void addSecure(Account cur) {
 		
-		public boolean hasSecure(Account cur) {
-			return true;
-			
-			
-			
-//			if(cur.hasSecureAccount()) {
-//				return true;
-//			}
-//			return false;
-		}
+		String savingId = cur.getAccountNumber();
+		atm.addSecurityDB(savingId);
+		
+	}
 	
 }

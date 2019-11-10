@@ -327,28 +327,28 @@ public class DB {
 		String sql = "Select * from accountinfo";
 		return mHelper.getCount(sql);
 	}
-	
-	public boolean hasSecure(String savId) {
-		
-//		String sql = "select ID from managerinfo where username='" + username + "' and password='" + pwd + "'";
-//		ResultSet pResultSet = null;
-//		int id = 0;
-//		try {
-//			pResultSet = mHelper.query(sql);
-//
-//			while (pResultSet.next()) {
-//				id = pResultSet.getInt(1);
-//				System.out.println(id);
-//			}
-//			pResultSet.close();
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return id;
-		
-		return false;
-	}
+//	
+//	public boolean hasSecure(String savId) {
+//		
+////		String sql = "select ID from managerinfo where username='" + username + "' and password='" + pwd + "'";
+////		ResultSet pResultSet = null;
+////		int id = 0;
+////		try {
+////			pResultSet = mHelper.query(sql);
+////
+////			while (pResultSet.next()) {
+////				id = pResultSet.getInt(1);
+////				System.out.println(id);
+////			}
+////			pResultSet.close();
+////
+////		} catch (SQLException e) {
+////			e.printStackTrace();
+////		}
+////		return id;
+//		
+//		return false;
+//	}
 
 	public boolean addStock(Stock stock) {
 		
@@ -429,6 +429,49 @@ public class DB {
 		return stockArr;
 	}
 	
+	public boolean hasBindingSecurityAccount(String savingId) {
+		
+		String sql = "select * from securityinfo where AccountId = '" + savingId + "'";
+		ResultSet pResultSet = null;
+		pResultSet = mHelper.query(sql);
+		boolean hasSecure = false;
+		
+		try {
+			while(pResultSet.next()) {
+				try {
+					if(!pResultSet.getString(1).isEmpty()) {
+						hasSecure = true;
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return hasSecure;
+	}
+	
+	public void addSecurity(String savingId) {
+		String sql = "Select * from securityinfo";
+		int securityCnt = mHelper.getCount(sql);
+		
+		String newSecureId = String.valueOf(securityCnt + 1);
+		System.out.println("newSecureId" + newSecureId);
+		
+		String sqlInsert = "Insert into securityinfo values ('" + newSecureId + "', '" + savingId + "')";
+		
+		try {
+			mHelper.update(sqlInsert);
+			System.out.println("Succeed add a security account!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void insertTransaction(Transaction t) {
 		//TODO
 	}
@@ -444,4 +487,6 @@ public class DB {
 	public void updateStockShares() {  // convey a class
 		// TODO
 	}
+
+	
 }

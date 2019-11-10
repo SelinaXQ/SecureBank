@@ -141,10 +141,10 @@ public class SCBank extends Bank {
 		return flag;
 	}
 	
-	@Override
-	public boolean ifSecurity(Account cur) { // By database
-		return db.hasSecure(cur.getAccountNumber());
-	}
+//	@Override
+//	public boolean ifSecurity(Account cur) { // By database
+//		return db.hasSecure(cur.getAccountNumber());
+//	}
 
 	@Override
 	public ArrayList<Transaction> getTransactions() { // By database

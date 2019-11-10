@@ -192,9 +192,9 @@ public class ATM {
 		return currentBank.ifAccount(accn);
 	}
 
-	public boolean ifSecurityDB(Account cur) {
-		return currentBank.ifSecurity(cur);
-	}
+//	public boolean ifSecurityDB(Account cur) {
+//		return currentBank.ifSecurity(cur);
+//	}
 
 	public boolean addStockDB(Stock stock) {
 		if(db.addStock(stock)) {
@@ -218,6 +218,14 @@ public class ATM {
 	}
 	public ArrayList<Stock> getStocksDB() {
 		return db.getStocks();
+	}
+	
+	public boolean hasBindingSecurityAccountDB(String savingNum) {
+		return db.hasBindingSecurityAccount(savingNum);
+	}
+	
+	public void addSecurityDB(String savingId) {
+		db.addSecurity(savingId);
 	}
 
 }
