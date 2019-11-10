@@ -752,7 +752,6 @@ public class CustomerWin {
 						addSecure(curAccount);	
 						JOptionPane.showMessageDialog(null, "Succeed open a security account, now you can trade stocks");
 					}
-					
 					new SecurityWin(atm, cId, curAccount, cb2.getSelectedIndex());
 					
 					frame.dispose();
