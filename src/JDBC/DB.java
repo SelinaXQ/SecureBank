@@ -419,7 +419,10 @@ public class DB {
 
                 ResultSet cResultSet = mHelper.query(getCurrecyIdSql);
 
-                String currencyName = cResultSet.getString(1);
+                String currencyName = null;
+                if (tResultSet.next()) {
+                    currencyName = tResultSet.getString(1);
+                }
 
                 Balance newBalance = new Balance(amount, curID, currencyName);
                 Transaction newTransaction = new Transaction(index, cusID, name, operaAccNum, targetAccNum, info, newBalance);
