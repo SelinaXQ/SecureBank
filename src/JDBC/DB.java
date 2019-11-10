@@ -640,7 +640,17 @@ public class DB {
         String operaAccNum = t.getOperaAccNum();
         String targetAccNum = t.getTargetAccNum();
         int cusID = t.getCusID();
-        int index = t.getIndex();
+
+        double money = balance.getMoney();
+        int curID = balance.getCurID();
+
+        String insertTransSql = "insert into transactiondetails values(null, '"
+                + operaAccNum + "', '" + targetAccNum + "', " + money + ", " + curID + ", '" + name + "', " + cusID + ", '" + info + "')";
+        try {
+            mHelper.update(insertTransSql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
