@@ -1,4 +1,5 @@
 package Views;
+
 import Models.*;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ public class CustomerWin {
 	private AccOnOffButtonListener onoffListener;
 	private LoaButtonListener loaListener;
 	private ComboBoxListener listener;
-	
+
 	private OpenSecurityButtonListener osbListener;
 
 	private JFrame frame;
@@ -135,7 +136,6 @@ public class CustomerWin {
 		cheAccounts = cId.getOneAccounts(Bank.CHECKING_ACCOUNT);
 
 		int curCheAcc = cheAccounts.size() - 1;
-		System.out.println("cheA:" + cheAccounts.size());
 		if (curCheAcc != -1) {
 			String[] cheAccStr = getAccountStr(cheAccounts);
 			cb1 = new JComboBox<String>(cheAccStr);
@@ -144,7 +144,6 @@ public class CustomerWin {
 
 		savAccounts = cId.getOneAccounts(Bank.SAVING_ACCOUNT);
 		int curSavAcc = savAccounts.size() - 1;
-		System.out.println("savA:" + savAccounts.size());
 		if (curSavAcc != -1) {
 			String[] savAccStr = getAccountStr(savAccounts);
 			cb2 = new JComboBox<String>(savAccStr);
@@ -154,7 +153,6 @@ public class CustomerWin {
 		loaAccounts = cId.getOneAccounts(Bank.LOANS_ACCOUNT);
 
 		int curLoanAcc = loaAccounts.size() - 1;
-		System.out.println("loaA:" + loaAccounts.size());
 		if (curLoanAcc != -1) {
 			String[] loaAccStr = getAccountStr(loaAccounts);
 			cb3 = new JComboBox<String>(loaAccStr);
@@ -325,14 +323,12 @@ public class CustomerWin {
 		bt12 = new JButton("Withdrawal");
 		bt13 = new JButton("Deposit");
 		bt19 = new JButton("Stop this Account");
-		
-		
+
 		bt23 = new JButton("Open Security Account");
-		
-		
+
 		bt24 = new JButton("Get Interests");
 //		bt23.setEnabled(false);
-		
+
 		bt23.addActionListener(osbListener);
 
 		bt12.addActionListener(casaListener);
@@ -734,41 +730,44 @@ public class CustomerWin {
 		}
 	}
 
-	
-	class OpenSecurityButtonListener implements ActionListener{
+	class OpenSecurityButtonListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Object object = e.getSource();
-			if(object == bt23) {
-				//check balance > threshold
-				//or
-				//check if the account already has a security account
-				
-				
-				System.out.println("button click");
-				if(canOpen(curAccount) || hasSecure(curAccount) ) {//|| hasSecure((SavingAccount)curAccount) ) {
-					
-					if(!hasSecure(curAccount)) {
-						//if no secure account, new a secure account and put it into db
-						addSecure(curAccount);	
-						JOptionPane.showMessageDialog(null, "Succeed open a security account, now you can trade stocks");
-					}
-					
-					new SecurityWin(atm, cId, curAccount, cb2.getSelectedIndex());
-					
-					frame.dispose();
-				}else {
-					JOptionPane.showMessageDialog(null, "Your do not have enough money to open a security account! Your balance should larger than 500!");
+			if (object == bt23) {
+				// check balance > threshold
+				// or
+				// check if the account already has a security account
+				if (cb2 == null) {
+					JOptionPane.showMessageDialog(null, "Please open a saving account! You dont have one! ", "Message",
+							JOptionPane.ERROR_MESSAGE);
+					return;
 				}
-				
-				
+				System.out.println("button click");
+				if (canOpen(curAccount) || hasSecure(curAccount)) {// || hasSecure((SavingAccount)curAccount) ) {
+
+					if (!hasSecure(curAccount)) {
+						// if no secure account, new a secure account and put it into db
+						addSecure(curAccount);
+						JOptionPane.showMessageDialog(null,
+								"Succeed open a security account, now you can trade stocks");
+					}
+
+					new SecurityWin(atm, cId, curAccount, cb2.getSelectedIndex());
+
+					frame.dispose();
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Your do not have enough money to open a security account! Your balance should larger than 500!");
+				}
+
 			}
 		}
-		
+
 	}
-	
+
 	class AccOnOffButtonListener implements ActionListener {
 
 		@Override
@@ -901,33 +900,32 @@ public class CustomerWin {
 		}
 		return flag;
 	}
-	
-	//check if this saving account can open a security account
+
+	// check if this saving account can open a security account
 	public boolean canOpen(Account cur) {
-		if(cur.getBalances().get(1).getMoney() > atm.getSecurityThresold()) {
+		if (cur.getBalances().get(1).getMoney() > atm.getSecurityThresold()) {
 			return true;
 		}
 		return false;
 	}
-		
-		
+
 	public boolean hasSecure(Account cur) {
-			//
+		//
 		String savingNum = cur.getAccountNumber();
-		if(atm.hasBindingSecurityAccountDB(savingNum)){
+		if (atm.hasBindingSecurityAccountDB(savingNum)) {
 			System.out.println("has secure");
 			return true;
-		}else {
+		} else {
 			System.out.println("no secure");
 			return false;
 		}
 	}
-	
+
 	public void addSecure(Account cur) {
-		
+
 		String savingId = cur.getAccountNumber();
 		atm.addSecurityDB(savingId);
-		
+
 	}
-	
+
 }

@@ -147,11 +147,10 @@ public class ManagerWin {
 		p5.add(stockListPanel);
 		p5.add(deleteStockPanel);
 		p5.add(createStockLabel);
-		//p5.add(p8);
 		p5.add(stockIdPanel);
 		p5.add(stockCompanyPanel);
 		p5.add(stockPricePanel);
-		p5.add(addStockButton);
+		p5.add(p8);
 
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);	
 		stockListPanel.add(scrollPane);
@@ -173,6 +172,8 @@ public class ManagerWin {
 
 		stockPricePanel.add(stockPriceLabel);
 		stockPricePanel.add(stockPriceField);
+
+		p8.add(addStockButton);
 		
 		sList.addListSelectionListener(listener4);
 

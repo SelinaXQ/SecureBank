@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import JDBC.DB;
 
 public abstract class Bank {
-	public Bank(String name) {
+	public Bank(String name,DB db) {
 		this.name = name;
-		accountCount = 0;
+		this.db = db;
+		CURRENCY_LIST = db.getCurrencyTypesStr();
 	}
 
 	public static int accountCount;
@@ -16,7 +17,7 @@ public abstract class Bank {
 	public static final int SAVING_ACCOUNT = 2;
 	public static final int LOANS_ACCOUNT = 3;
 
-	public static final String[] CURRENCY_LIST = { "USD", "CNY", "JPY" };
+	
 
 	public static final int USD = 1;
 	public static final int CNY = 2;
@@ -60,6 +61,8 @@ public abstract class Bank {
 
 	protected static double SAVING_INTEREST_THRESOLD;
 	protected static double SECURE_THRESOLD = 0;
+	
+	public static String[] CURRENCY_LIST;
 
 	public static int getAccountCount() {
 		return accountCount;
@@ -320,7 +323,6 @@ public abstract class Bank {
 
 	public abstract boolean ifAccount(String accn); // By database
 
-//	public abstract boolean ifSecurity(Account cur); // By database
 
 	public abstract ArrayList<Transaction> getTransactions(); // By database
 

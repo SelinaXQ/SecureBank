@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80018
 File Encoding         : 65001
 
-Date: 2019-11-10 15:04:48
+Date: 2019-11-10 22:49:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,39 +24,39 @@ CREATE TABLE `accountinfo` (
   `CustID` int(11) NOT NULL COMMENT 'customer’s ID',
   `AccountType` int(11) NOT NULL COMMENT 'account’s type: 1.Saving; 2.Checking; 3.Loan',
   `CurrencyID` int(11) NOT NULL COMMENT 'currency’s type: 1.USD; 2.CNY; 3.JPY etc',
-  `Money` double NOT NULL COMMENT 'money',
+  `Money` double(32,2) NOT NULL COMMENT 'money',
   `Con` int(11) NOT NULL,
   PRIMARY KEY (`ID`,`AccountType`,`CurrencyID`),
   KEY `AccountType` (`AccountType`),
   KEY `CurrencyID` (`CurrencyID`),
   KEY `accountinfo_ibfk_1` (`CustID`),
   KEY `ID` (`ID`),
-  CONSTRAINT `accountinfo_ibfk_1` FOREIGN KEY (`CustID`) REFERENCES `customerinfo` (`ID`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `accountinfo_ibfk_1` FOREIGN KEY (`CustID`) REFERENCES `customerinfo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `accountinfo_ibfk_3` FOREIGN KEY (`CurrencyID`) REFERENCES `currencytype` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of accountinfo
 -- ----------------------------
-INSERT INTO `accountinfo` VALUES ('00000001', '1', '1', '1', '0', '1');
-INSERT INTO `accountinfo` VALUES ('00000002', '2', '1', '1', '848.989013671875', '1');
-INSERT INTO `accountinfo` VALUES ('00000003', '3', '1', '1', '-30', '1');
-INSERT INTO `accountinfo` VALUES ('00000004', '2', '2', '1', '0', '0');
-INSERT INTO `accountinfo` VALUES ('00000005', '2', '3', '1', '0', '0');
-INSERT INTO `accountinfo` VALUES ('00000006', '2', '2', '1', '8226.936237445314', '1');
-INSERT INTO `accountinfo` VALUES ('00000007', '2', '2', '1', '0', '0');
-INSERT INTO `accountinfo` VALUES ('00000008', '2', '3', '1', '0', '0');
-INSERT INTO `accountinfo` VALUES ('00000009', '2', '3', '1', '0', '0');
-INSERT INTO `accountinfo` VALUES ('00000010', '2', '1', '1', '0', '1');
-INSERT INTO `accountinfo` VALUES ('00000011', '2', '1', '1', '555', '1');
-INSERT INTO `accountinfo` VALUES ('00000012', '2', '3', '1', '9989', '1');
-INSERT INTO `accountinfo` VALUES ('00000013', '2', '2', '1', '6024.024', '1');
-INSERT INTO `accountinfo` VALUES ('00000014', '2', '2', '1', '1200', '1');
-INSERT INTO `accountinfo` VALUES ('00000015', '3', '2', '1', '0', '1');
-INSERT INTO `accountinfo` VALUES ('00000016', '3', '2', '1', '0', '1');
-INSERT INTO `accountinfo` VALUES ('00000017', '3', '2', '1', '0', '1');
-INSERT INTO `accountinfo` VALUES ('00000018', '1', '1', '1', '-10', '1');
-INSERT INTO `accountinfo` VALUES ('00000019', '2', '2', '1', '0', '1');
+INSERT INTO `accountinfo` VALUES ('00000002', '2', '1', '1', '9990990.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000003', '3', '1', '1', '-30.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000004', '2', '2', '1', '0.00', '0');
+INSERT INTO `accountinfo` VALUES ('00000005', '2', '3', '1', '0.00', '0');
+INSERT INTO `accountinfo` VALUES ('00000006', '2', '2', '1', '6239.39', '0');
+INSERT INTO `accountinfo` VALUES ('00000007', '2', '2', '1', '0.00', '0');
+INSERT INTO `accountinfo` VALUES ('00000008', '2', '3', '1', '0.00', '0');
+INSERT INTO `accountinfo` VALUES ('00000009', '2', '3', '1', '0.00', '0');
+INSERT INTO `accountinfo` VALUES ('00000010', '2', '1', '1', '200.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000011', '2', '1', '1', '555.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000012', '2', '3', '1', '0.00', '0');
+INSERT INTO `accountinfo` VALUES ('00000013', '2', '2', '1', '6024.02', '0');
+INSERT INTO `accountinfo` VALUES ('00000014', '2', '2', '1', '1200.00', '0');
+INSERT INTO `accountinfo` VALUES ('00000015', '3', '2', '1', '0.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000016', '3', '2', '1', '0.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000017', '3', '2', '1', '0.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000019', '1', '1', '1', '-10.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000019', '2', '2', '1', '0.00', '0');
+INSERT INTO `accountinfo` VALUES ('00000021', '2', '2', '1', '5080.56', '1');
 
 -- ----------------------------
 -- Table structure for `accounttype`
@@ -110,7 +110,7 @@ CREATE TABLE `customerinfo` (
 -- ----------------------------
 -- Records of customerinfo
 -- ----------------------------
-INSERT INTO `customerinfo` VALUES ('1', 'Johns Smith', '880 Brighton ST', '123456', 'Poor man', '874910433', null);
+INSERT INTO `customerinfo` VALUES ('1', 'Lucy Lucky', '680 CommonWealth Ave', '123456', 'Lucy', '0482619522', 'OOD');
 INSERT INTO `customerinfo` VALUES ('2', 'Tom Jackson', '66 Skytree Avenue', '123456', 'Rich man', '0371337198', 'Very rich man');
 INSERT INTO `customerinfo` VALUES ('3', 'James Joseph', '777 Lucky Avenue', '123456', 'Customer', '0234215193', null);
 
@@ -139,7 +139,7 @@ CREATE TABLE `marketopdetails` (
   `SAID` varchar(20) NOT NULL COMMENT 'security account ID',
   `StockID` varchar(7) NOT NULL COMMENT 'stock ID',
   `ShareNumber` bigint(20) NOT NULL COMMENT 'the number of shares customer is holding',
-  `CostPrice` double DEFAULT NULL,
+  `CostPrice` double(32,2) DEFAULT NULL,
   `OpTime` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`OpID`),
   KEY `SAID` (`SAID`),
@@ -167,9 +167,11 @@ CREATE TABLE `securityinfo` (
 -- ----------------------------
 -- Records of securityinfo
 -- ----------------------------
+INSERT INTO `securityinfo` VALUES ('5', '00000002');
 INSERT INTO `securityinfo` VALUES ('1', '00000006');
 INSERT INTO `securityinfo` VALUES ('3', '00000013');
 INSERT INTO `securityinfo` VALUES ('2', '00000014');
+INSERT INTO `securityinfo` VALUES ('6', '00000021');
 
 -- ----------------------------
 -- Table structure for `sharesinfo`
@@ -190,31 +192,26 @@ CREATE TABLE `sharesinfo` (
 -- ----------------------------
 -- Records of sharesinfo
 -- ----------------------------
-INSERT INTO `sharesinfo` VALUES ('1', '2', '1', '24');
-INSERT INTO `sharesinfo` VALUES ('2', '2', '2', '20');
-INSERT INTO `sharesinfo` VALUES ('3', '2', '3', '44');
-INSERT INTO `sharesinfo` VALUES ('4', '3', '3', '80');
-INSERT INTO `sharesinfo` VALUES ('6', '3', '4', '18');
+INSERT INTO `sharesinfo` VALUES ('1', '1', '1', '10');
+INSERT INTO `sharesinfo` VALUES ('2', '1', 'accddff', '10');
+INSERT INTO `sharesinfo` VALUES ('3', '6', 'accddff', '20');
 
 -- ----------------------------
 -- Table structure for `stockinfo`
 -- ----------------------------
 DROP TABLE IF EXISTS `stockinfo`;
 CREATE TABLE `stockinfo` (
-  `ID` varchar(7) NOT NULL,
+  `ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Name` varchar(20) DEFAULT NULL,
-  `CurrentPrice` double DEFAULT NULL,
+  `CurrentPrice` double(32,2) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stockinfo
 -- ----------------------------
-INSERT INTO `stockinfo` VALUES ('1', '111', '0.02');
-INSERT INTO `stockinfo` VALUES ('2', '222', '0.09');
-INSERT INTO `stockinfo` VALUES ('3', '222', '0.02');
-INSERT INTO `stockinfo` VALUES ('4', '222', '0.02');
-INSERT INTO `stockinfo` VALUES ('5', 'nike', '0.02');
+INSERT INTO `stockinfo` VALUES ('1', 'rewwr', '0.10');
+INSERT INTO `stockinfo` VALUES ('accddff', 'oeq', '0.08');
 
 -- ----------------------------
 -- Table structure for `stockpricechange`
@@ -230,6 +227,9 @@ CREATE TABLE `stockpricechange` (
   CONSTRAINT `FK_stockpricechange_stockinfo` FOREIGN KEY (`stockID`) REFERENCES `stockinfo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=75324 DEFAULT CHARSET=utf8;
 
+-- ----------------------------
+-- Records of stockpricechange
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `transactiondetails`
@@ -239,7 +239,7 @@ CREATE TABLE `transactiondetails` (
   `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `OpAccountID` varchar(20) NOT NULL COMMENT 'the operation account ID ',
   `TargetAccountID` varchar(20) DEFAULT NULL COMMENT 'the target account ID, null if no target',
-  `Amount` double NOT NULL COMMENT 'the amount of money being operated',
+  `Amount` double(32,2) NOT NULL COMMENT 'the amount of money being operated',
   `CurrencyId` int(11) NOT NULL,
   `Name` varchar(20) NOT NULL,
   `CustomerId` int(11) NOT NULL,
@@ -247,11 +247,32 @@ CREATE TABLE `transactiondetails` (
   PRIMARY KEY (`ID`),
   KEY `OpAccountID` (`OpAccountID`),
   KEY `TargetAccountID` (`TargetAccountID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactiondetails
 -- ----------------------------
+INSERT INTO `transactiondetails` VALUES ('1', '00000002', '', '100.00', '1', 'Tom Jackson', '2', 'Withdrawing cash from checking account');
+INSERT INTO `transactiondetails` VALUES ('2', '00000002', '', '100.00', '1', 'Tom Jackson', '2', 'Saving Money to Checking Account');
+INSERT INTO `transactiondetails` VALUES ('3', '00000002', '00000010', '-100.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('4', '00000002', '00000010', '-100.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('5', '00000002', '00000010', '-100.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('6', '00000002', '00000010', '-100.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('7', '00000002', '00000010', '-100.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('8', '00000002', '00000010', '-90.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('9', '00000002', '00000010', '-100.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('10', '00000002', '00000010', '-100.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('11', '00000010', '00000002', '100.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('12', '00000006', '', '100.00', '1', 'Tom Jackson', '2', 'Withdrawing cash from saving account');
+INSERT INTO `transactiondetails` VALUES ('13', '00000006', '', '2000.00', '1', 'Tom Jackson', '2', 'Withdrawing cash from saving account');
+INSERT INTO `transactiondetails` VALUES ('14', '00000006', '', '100.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('15', '00000012', '', '100.00', '1', 'Tom Jackson', '2', 'Requesting loans');
+INSERT INTO `transactiondetails` VALUES ('16', '00000002', '', '-100.00', '1', 'Tom Jackson', '2', 'Returning loans');
+INSERT INTO `transactiondetails` VALUES ('17', '00000020', '', '500.00', '1', 'Johns Smith', '1', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('18', '00000020', '', '100.00', '1', 'Johns Smith', '1', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('19', '00000002', '', '10000000.00', '1', 'Tom Jackson', '2', 'Saving Money to Checking Account');
+INSERT INTO `transactiondetails` VALUES ('20', '00000002', '', '-9989.00', '1', 'Tom Jackson', '2', 'Returning loans');
+INSERT INTO `transactiondetails` VALUES ('21', '00000021', '', '5000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
 
 -- ----------------------------
 -- View structure for `pricechanged`

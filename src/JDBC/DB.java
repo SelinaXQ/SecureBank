@@ -11,7 +11,7 @@ public class DB {
 	public DB() {
 		mHelper = new MySQLHelper();
 	}
-	
+
 	public Account getAccount(String acnumber) {
 		// get accounts ID By accountnumber
 		Account acc = null;
@@ -380,7 +380,6 @@ public class DB {
 	 * get the informations of all transactions
 	 */
 	public ArrayList<Transaction> getTransactions() {
-		// TODO
 		String sql = "SELECT id,opaccountid,targetaccountid,amount,currencyid,name,customerid,info FROM transactiondetails";
 		ResultSet tResultSet;
 		ArrayList<Transaction> transArr = new ArrayList<>();
@@ -416,7 +415,6 @@ public class DB {
 	}
 
 	public ArrayList<Stock> getStocks() {
-		// TODO
 		String sql = "Select * from stockinfo";
 		ResultSet pResultSet;
 		ArrayList<Stock> stockArr = new ArrayList<>();
@@ -455,13 +453,11 @@ public class DB {
 						hasSecure = true;
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			pResultSet.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return hasSecure;
@@ -495,13 +491,11 @@ public class DB {
 				try {
 					secureId = pResultSet.getString(1);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			pResultSet.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return secureId;
@@ -522,13 +516,11 @@ public class DB {
 						shareHas = pResultSet.getInt(4);
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			pResultSet.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -573,7 +565,6 @@ public class DB {
 				res.add(pResultSet.getString(3) + "   " + pResultSet.getInt(4));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return res;
@@ -594,7 +585,6 @@ public class DB {
 						+ "   " + pResultSet.getInt(7) + "   " + pResultSet.getDouble(3) * pResultSet.getInt(7));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return res;
@@ -646,37 +636,53 @@ public class DB {
 
 	}
 
+	public void createCustomer(CustomerID cId) {
+		int id = cId.getIndex();
+		String username = cId.getUserName();
+		String password = cId.getPassword();
+		String address = cId.getAddress();
+		String phoneNo = cId.getPhone();
+		String name = cId.getName();
+		String collateral = cId.getCollateral();
 
-    public void createCustomer(CustomerID cId) {
-        //TODO
-        int id = cId.getIndex();
-        String username = cId.getUserName();
-        String password = cId.getPassword();
-        String address =cId.getAddress();
-        String phoneNo = cId.getPhone();
-        String name = cId.getName();
-        String collateral = cId.getCollateral();
+		String insertTransSql = "insert into customerinfo values(" + id + ", '" + name + "', '" + address + "', '"
+				+ password + "', '" + username + "', '" + phoneNo + "', '" + collateral + "')";
+		try {
+			mHelper.update(insertTransSql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        String insertTransSql = "insert into customerinfo values("
-                + id + ", '" + name + "', '" + address + "', '" + password + "', '" + username + "', '" + phoneNo + "', '" + collateral + "')";
-        try {
-            mHelper.update(insertTransSql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	}
 
-    }
-    public void deleteCustomer(int CIdIndex) {
-        String sql = "delete from customerinfo where id = " + CIdIndex + "";
-        try {
-            mHelper.update(sql);
-            System.out.println("Succeed delete a stock");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //TODO
-    }
+	public void deleteCustomer(int CIdIndex) {
+		String sql = "delete from customerinfo where id = " + CIdIndex + "";
+		try {
+			mHelper.update(sql);
+			System.out.println("Succeed delete a stock");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-   
+	public String[] getCurrencyTypesStr() {
+		ArrayList<String> currTypeStrs = new ArrayList<String>();
 
+		String sql = "select name from currencytype";
+		ResultSet pResultSet;
+		String currTypeStr = null;
+		try {
+			pResultSet = mHelper.query(sql);
+
+			while (pResultSet.next()) {
+				currTypeStr = pResultSet.getString(1);
+				currTypeStrs.add(currTypeStr);
+			}
+			pResultSet.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return currTypeStrs.stream().toArray(String[]::new);
+	}
 }

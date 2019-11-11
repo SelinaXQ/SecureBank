@@ -24,8 +24,7 @@ public class SCBank extends Bank {
 	public static final int SC_SECURE_THRESOLD = 500;
 
 	public SCBank(String name, DB db) {
-		super(name);
-		this.db = db;
+		super(name,db);
 		CHECKING_ACCOUNT_OPEN_FEE = SC_CHECKING_ACCOUNT_OPEN_FEE;
 		CHECKING_ACCOUNT_CLOSE_FEE = SC_CHECKING_ACCOUNT_CLOSE_FEE;
 		SAVING_ACCOUNT_OPEN_FEE = SC_SAVING_ACCOUNT_OPEN_FEE;
