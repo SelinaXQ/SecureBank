@@ -289,7 +289,7 @@ public abstract class Bank {
 
 	public abstract void updateCustomerAccs(int cIdIndex, ArrayList<Account> accs); // By database
 
-	public abstract void deleteCustomer(int index); // By database
+	public abstract void deleteCustomer(CustomerID cId); // By database
 
 	public abstract boolean ifAccount(String accn); // By database
 
