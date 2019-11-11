@@ -6,7 +6,6 @@ import java.util.HashMap;
 import JDBC.DB;
 
 public class SCBank extends Bank {
-	public static DB db;
 	public static final float SC_CHECKING_ACCOUNT_OPEN_FEE = 10;
 	public static final float SC_CHECKING_ACCOUNT_CLOSE_FEE = 10;
 	public static final float SC_SAVING_ACCOUNT_OPEN_FEE = 10;
@@ -22,7 +21,7 @@ public class SCBank extends Bank {
 
 	public static final double SC_SAVING_INTEREST_THRESOLD = 5000;
 	
-	public static final int SECURE_THRESOLD = 500;
+	public static final int SC_SECURE_THRESOLD = 500;
 
 	public SCBank(String name, DB db) {
 		super(name);
@@ -40,6 +39,7 @@ public class SCBank extends Bank {
 		SAVING_INTEREST = SC_SAVING_INTEREST;
 
 		SAVING_INTEREST_THRESOLD = SC_SAVING_INTEREST_THRESOLD;
+		SECURE_THRESOLD  = SC_SECURE_THRESOLD;
 	}
 
 	public static int getAccountCount() {

@@ -3,7 +3,6 @@ package Models;
 public class SecurityAccount {
 	
 	private String savingAccountNum;
-	private String securityAccountNum;
 	
 	public SecurityAccount(String savingAccountNum) {
 		this.savingAccountNum = savingAccountNum;

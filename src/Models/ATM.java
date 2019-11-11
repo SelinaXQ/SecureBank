@@ -57,7 +57,6 @@ public class ATM {
 		return currentBank.getCustomers();
 	}
 
-
 	public void transaction(CustomerID cId, Account acc, int inOrOut, double amount, int type) {
 		int accType = acc.getType();
 		if (accType == Bank.LOANS_ACCOUNT) {
@@ -88,23 +87,26 @@ public class ATM {
 			if (acc1.equals(acc0)) {
 				Balance b = new Balance(-amount, balanceType, Bank.CURRENCY_LIST[balanceType] + 1);
 				cId.getAccounts().set(i, acc);
+				updateCustomerAccDB(cId);
+				currentBank.addTransaction(cId.getIndex(), cId.getName(), acc1, acc2, Bank.TR_TRANSFER, b);
 				break;
 			}
 		}
 		ArrayList<CustomerID> cIds = currentBank.getCustomers();
+		System.out.println("1"+cIds.size());
 		for (int i = 0; i < cIds.size(); i++) {
-			for (int j = 0; j < cIds.get(i).getAccounts().size(); j++) {
-				Account account = cIds.get(i).getAccounts().get(j);
+			CustomerID cId2 = cIds.get(i);
+			for (int j = 0; j < cId2.getAccounts().size(); j++) {
+				Account account = cId2.getAccounts().get(j);
+				System.out.println(account.getAccountNumber());
 				if (account.getAccountNumber().equals(acc2)) {
 					double money = account.getBalances().get(balanceType).getMoney() + amount;
 					account.getBalances().get(balanceType).setMoney(money);
-					cIds.get(i).getAccounts().set(j, account);
-					updateCustomerAccDB(cId);
-					updateCustomerAccDB(cIds.get(i));
+					cId2.getAccounts().set(j, account);
+					updateCustomerAccDB(cId2);
 					Balance b = new Balance(amount, balanceType, Bank.CURRENCY_LIST[balanceType] + 1);
-					currentBank.addTransaction(cId.getIndex(), cId.getName(), acc1, acc2, Bank.TR_TRANSFER, b);
-					currentBank.addTransaction(cIds.get(i).getIndex(), cIds.get(i).getName(), acc2, acc1, Bank.TR_TRANSFER,
-							b);
+					currentBank.addTransaction(cId2.getIndex(), cId2.getName(), acc2, acc1,
+							Bank.TR_TRANSFER, b);
 					return;
 				}
 			}
@@ -136,7 +138,6 @@ public class ATM {
 		new CustomerWin(atm, atm.getCustomerByDB(cId.getIndex()), true, win, 0);
 
 	}
-
 
 	public void loans(CustomerID cId, Account acc, int inOrOut, double amount, int type) {
 		if (inOrOut == 1) {
@@ -192,16 +193,15 @@ public class ATM {
 		return currentBank.ifAccount(accn);
 	}
 
-
 	public boolean addStockDB(Stock stock) {
-		if(db.addStock(stock)) {
+		if (db.addStock(stock)) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 
 	}
-	
+
 	public void deleteStockDB(String stockId) {
 		db.deleteStock(stockId);
 	}
@@ -209,14 +209,15 @@ public class ATM {
 	public void modifyStockPriceDB(String stockId, Double modifyPrice) {
 		db.modifyStockPrice(stockId, modifyPrice);
 	}
+
 	public ArrayList<Stock> getStocksDB() {
 		return db.getStocks();
 	}
-	
+
 	public boolean hasBindingSecurityAccountDB(String savingNum) {
 		return db.hasBindingSecurityAccount(savingNum);
 	}
-	
+
 	public void addSecurityDB(String savingId) {
 		db.addSecurity(savingId);
 	}
@@ -224,25 +225,29 @@ public class ATM {
 	public String getSecureIdDB(String savingId) {
 		return db.getSecureId(savingId);
 	}
-	
+
 	public void buySharesDB(String secureId, String stockId, int shareNumber) {
 		db.buyShares(secureId, stockId, shareNumber);
 	}
-	
-	public ArrayList<String> getStockIdFromSecureDB(String secureId){
+
+	public ArrayList<String> getStockIdFromSecureDB(String secureId) {
 		return db.getStockIdFromSecure(secureId);
 	}
-	
-	public ArrayList<String> getStockInfoAmountFromSecureDB(String secureId){
+
+	public ArrayList<String> getStockInfoAmountFromSecureDB(String secureId) {
 		return db.getStockInfoAmountFromSecure(secureId);
 	}
-	
+
 	public void deleteShareInfoDB(String secureId, String stockId) {
 		db.deleteShareInfo(secureId, stockId);
 	}
 
 	public void modifyShareInfoDB(String secureId, String stockId, int currentAmount) {
 		db.modifyShareInfo(secureId, stockId, currentAmount);
-		
+
+	}
+
+	public double getSecurityThresold() {
+		return currentBank.getSecurityThresold();
 	}
 }

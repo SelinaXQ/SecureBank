@@ -42,13 +42,10 @@ public class CustomerWin {
 	private Account curAccount;
 
 	private ATM atm;
-	
-	private int secureThreshold;
 
 	public CustomerWin(ATM atm, CustomerID cId, boolean flag, int win, int curAccIndex) {
 		this.atm = atm;
 		this.cId = cId;
-		this.secureThreshold = SCBank.SECURE_THRESOLD;
 		setCustomerWin(flag);
 		initComboBoxes();
 		initCustomerWin(win);
@@ -722,7 +719,13 @@ public class CustomerWin {
 				inOrOut = 2;
 			}
 			if (object == bt13 || object == bt12) {
-				curAccIndex = cb2.getSelectedIndex();
+				try {
+					curAccIndex = cb2.getSelectedIndex();
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Please open a saving account! You dont have one! ", "Message",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			} else if (object == bt7 || object == bt8) {
 				curAccIndex = cb1.getSelectedIndex();
 			}
@@ -839,12 +842,14 @@ public class CustomerWin {
 				if (cb3 == null) {
 					JOptionPane.showMessageDialog(null, "Please open a loans account! You dont have one! ", "Message",
 							JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 				inOrOut = 1;
 			} else if (object == bt15) {
 				if (cb3 == null) {
 					JOptionPane.showMessageDialog(null, "Please open a loans account! You dont have one! ", "Message",
 							JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 				inOrOut = 2;
 			}
@@ -899,7 +904,7 @@ public class CustomerWin {
 	
 	//check if this saving account can open a security account
 	public boolean canOpen(Account cur) {
-		if(cur.getBalances().get(1).getMoney() > secureThreshold) {
+		if(cur.getBalances().get(1).getMoney() > atm.getSecurityThresold()) {
 			return true;
 		}
 		return false;

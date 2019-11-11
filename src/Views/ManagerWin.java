@@ -33,6 +33,8 @@ public class ManagerWin {
 	private FindCustomerListener listener2;
 	private FindTransactionListener listener3;
 	private StockListSelectionHanlder listener4;
+	
+	private JScrollPane scrollPane;
 
 	private ATM atm;
 
@@ -123,6 +125,7 @@ public class ManagerWin {
 
 	private void initPanel2() {
 
+		scrollPane = new JScrollPane(sList);
 		deleteStockButton = new JButton("Delete this Stock");
 		modifyPriceButton = new JButton("Modify price");
 		addStockButton = new JButton("Add this Stock");
@@ -138,29 +141,29 @@ public class ManagerWin {
 		stockCompanyLabel = new JLabel("Company/Name: ");
 		stockPriceLabel = new JLabel("Price/per: ");
 
-		p5.setLayout(new GridLayout(11, 1));
+		p5.setLayout(new GridLayout(8, 1));
 		
 		p5.add(stockMarketLabel);
 		p5.add(stockListPanel);
-		p5.add(p12);
 		p5.add(deleteStockPanel);
-		p5.add(deleteModifyButtonPanel);
 		p5.add(createStockLabel);
-		p5.add(p8);
+		//p5.add(p8);
 		p5.add(stockIdPanel);
 		p5.add(stockCompanyPanel);
 		p5.add(stockPricePanel);
 		p5.add(addStockButton);
-		
-		stockListPanel.add(sList);
 
-		
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);	
+		stockListPanel.add(scrollPane);
+		//stockListPanel.add(sList);
+		sList.setFixedCellWidth(450);
+		sList.setVisibleRowCount(3);
 		
 		deleteStockPanel.add(deleteStockIdField);
 		deleteStockPanel.add(modifyPriceField);
 		
-		deleteModifyButtonPanel.add(deleteStockButton);
-		deleteModifyButtonPanel.add(modifyPriceButton);
+		deleteStockPanel.add(deleteStockButton);
+		deleteStockPanel.add(modifyPriceButton);
 
 		stockIdPanel.add(stockIdLabel);
 		stockIdPanel.add(stockIdField);
@@ -410,10 +413,14 @@ public class ManagerWin {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			int j = sList.getSelectedIndex();
-			deleteStockIdField.setText(stocks.get(j).getId());
-			modifyPriceField.setText(String.valueOf(stocks.get(j).getPrice()));
-			deleteId = j;
+			try {
+				int j = sList.getSelectedIndex();
+				deleteStockIdField.setText(stocks.get(j).getId());
+				modifyPriceField.setText(String.valueOf(stocks.get(j).getPrice()));
+				deleteId = j;
+			} catch (Exception e2) {
+			}
+			
 		}
 	}
 

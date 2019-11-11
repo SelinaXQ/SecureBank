@@ -58,4 +58,9 @@ public class Account {
 		String num = String.format("%8d", an).replace(" ", "0");
 		this.accountNumber = num;
 	}
+
+	public void setBalance(int balanceType, Balance b) {
+		balances.put(balanceType, b);
+		
+	}
 }

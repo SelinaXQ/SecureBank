@@ -40,8 +40,10 @@ public abstract class Bank {
 	public static final String TR_WITHDRAWAL_CHEACC = "Withdrawing cash from checking account";
 	public static final String TR_WITHDRAWAL_SAVACC = "Withdrawing cash from saving account";
 
+	
+
 	protected String name;
-	protected DB db;
+	protected static DB db;
 
 	protected static float CHECKING_ACCOUNT_OPEN_FEE;
 	protected static float CHECKING_ACCOUNT_CLOSE_FEE;
@@ -57,6 +59,7 @@ public abstract class Bank {
 	protected static double SAVING_INTEREST;
 
 	protected static double SAVING_INTEREST_THRESOLD;
+	protected static double SECURE_THRESOLD = 0;
 
 	public static int getAccountCount() {
 		return accountCount;
@@ -143,7 +146,7 @@ public abstract class Bank {
 				cId.getAccounts().set(i, a);
 
 				Balance b = new Balance(amount, type, Bank.CURRENCY_LIST[type]);
-//				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), "", info, b);
+				addTransaction(cId.getIndex(), cId.getName(), acc.getAccountNumber(), "", info, b);
 				charge(cId, TRANSACTION_FEE);
 				return;
 			}
@@ -320,6 +323,10 @@ public abstract class Bank {
 //	public abstract boolean ifSecurity(Account cur); // By database
 
 	public abstract ArrayList<Transaction> getTransactions(); // By database
+
+	public double getSecurityThresold() {
+		return SECURE_THRESOLD;
+	}
 
 
 }
