@@ -159,7 +159,7 @@ public class ATM {
 	}
 
 	public void deleteCustomerDB(int index) {
-		currentBank.deleteCustomer(index);
+		currentBank.deleteCustomer(currentBank.getCustomer(index));
 
 	}
 

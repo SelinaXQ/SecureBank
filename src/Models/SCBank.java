@@ -20,11 +20,11 @@ public class SCBank extends Bank {
 	public static final double SC_SAVING_INTEREST = 0.002;
 
 	public static final double SC_SAVING_INTEREST_THRESOLD = 5000;
-	
+
 	public static final int SC_SECURE_THRESOLD = 500;
 
 	public SCBank(String name, DB db) {
-		super(name,db);
+		super(name, db);
 		CHECKING_ACCOUNT_OPEN_FEE = SC_CHECKING_ACCOUNT_OPEN_FEE;
 		CHECKING_ACCOUNT_CLOSE_FEE = SC_CHECKING_ACCOUNT_CLOSE_FEE;
 		SAVING_ACCOUNT_OPEN_FEE = SC_SAVING_ACCOUNT_OPEN_FEE;
@@ -38,10 +38,8 @@ public class SCBank extends Bank {
 		SAVING_INTEREST = SC_SAVING_INTEREST;
 
 		SAVING_INTEREST_THRESOLD = SC_SAVING_INTEREST_THRESOLD;
-		SECURE_THRESOLD  = SC_SECURE_THRESOLD;
+		SECURE_THRESOLD = SC_SECURE_THRESOLD;
 	}
-
-
 
 	public void createCustomer(String name, String userName, String pwd, String address, String phone,
 			String collateral) {
@@ -119,8 +117,11 @@ public class SCBank extends Bank {
 	}
 
 	@Override
-	public void deleteCustomer(int index) { // By database
-		db.deleteCustomer(index);
+	public void deleteCustomer(CustomerID cId) { // By database
+		for (int i = 0; i < cId.getAccounts().size(); i++) {
+			stopAccount(cId, cId.getAccounts().get(i));
+		}
+		db.deleteCustomer(cId.getIndex());
 	}
 
 	@Override
@@ -133,7 +134,6 @@ public class SCBank extends Bank {
 		}
 		return flag;
 	}
-	
 
 	@Override
 	public ArrayList<Transaction> getTransactions() { // By database
