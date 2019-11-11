@@ -324,7 +324,7 @@ public class CustomerWin {
 		bt13 = new JButton("Deposit");
 		bt19 = new JButton("Stop this Account");
 
-		bt23 = new JButton("Open Security Account");
+		bt23 = new JButton("Security Account");
 
 		bt24 = new JButton("Get Interests");
 //		bt23.setEnabled(false);
