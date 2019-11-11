@@ -16,6 +16,13 @@ Date: 2019-11-10 22:49:44
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
+-- Create and Use Database `ATM`
+-- ----------------------------
+create database ATM;
+
+use ATM;
+
+-- ----------------------------
 -- Table structure for `accountinfo`
 -- ----------------------------
 DROP TABLE IF EXISTS `accountinfo`;
