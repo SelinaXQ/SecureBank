@@ -278,4 +278,67 @@ INSERT INTO `transactiondetails` VALUES ('21', '00000021', '', '5000.00', '1', '
 -- View structure for `pricechanged`
 -- ----------------------------
 DROP VIEW IF EXISTS `pricechanged`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pricechanged` AS select `s`.`stockID` AS `ID`,`s`.`pricechanged` AS `pricechanged` from (select `t`.`stockID` AS `stockID`,`t`.`pricechanged` AS `pricechanged` from ((select `stockpricechange`.`stockID` AS `stockID`,max(`stockpricechange`.`systime`) AS `latesttime` from `stockpricechange` group by `stockpricechange`.`stockID`) `s` join `stockpricechange` `t`) where ((`s`.`stockID` = `t`.`stockID`) and (`t`.`systime` = `s`.`latesttime`))) `s` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pricechanged` AS 
+SELECT 
+    `s`.`stockID` AS `ID`, `s`.`pricechanged` AS `pricechanged`
+FROM
+    (SELECT 
+        `t`.`stockID` AS `stockID`,
+            `t`.`pricechanged` AS `pricechanged`
+    FROM
+        ((SELECT 
+        `stockpricechange`.`stockID` AS `stockID`,
+            MAX(`stockpricechange`.`systime`) AS `latesttime`
+    FROM
+        `stockpricechange`
+    GROUP BY `stockpricechange`.`stockID`) `s`
+    JOIN `stockpricechange` `t`)
+    WHERE
+        ((`s`.`stockID` = `t`.`stockID`)
+            AND (`t`.`systime` = `s`.`latesttime`))) `s`;
+
+
+-- ----------------------------
+-- CREATE PROCEDURE `StockPriceChanges`
+-- This procedure is to simulate the fluctuation of the stock prices 
+-- ----------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `StockPriceChanges`()
+BEGIN
+insert into StockPriceChange
+select null,sysdate(),ID,format(-0.1 + rand()*0.2,4) as changed from stockinfo;
+
+UPDATE StockInfo t 
+SET 
+    t.currentprice = t.currentprice * (SELECT 
+            (1 + s.pricechanged)
+        FROM
+            pricechanged s
+        WHERE
+            s.ID = t.ID)
+WHERE
+    EXISTS( SELECT 
+            1
+        FROM
+            pricechanged s
+        WHERE
+            s.ID = t.ID);
+
+UPDATE StockInfo t 
+SET 
+    t.currentprice = FORMAT(t.currentprice, 2);
+END$$
+
+DELIMITER ;
+;
+
+
+-- ----------------------------
+-- CREATE EVENT `changestockprice`
+-- This procedure is to simulate the fluctuation of the stock prices 
+-- call the procedure StockPriceChange() every 10 seconds
+-- ----------------------------
+CREATE EVENT changestockprice
+    ON SCHEDULE EVERY 10 SECOND
+    DO
+      call StockPriceChange();
