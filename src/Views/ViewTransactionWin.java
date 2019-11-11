@@ -59,6 +59,7 @@ public class ViewTransactionWin {
 	}
 
 	private void setViewTransactionWin() {
+		// get Transaction list
 		frame = new JFrame();
 		gbLayout = new GridBagLayout();
 		gbc = new GridBagConstraints();

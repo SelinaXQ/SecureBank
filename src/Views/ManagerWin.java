@@ -370,7 +370,7 @@ public class ManagerWin {
 	}
 
 	class FindCustomerListener implements ActionListener {
-
+		// find a customer 's information
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			boolean flag = false;
@@ -392,9 +392,9 @@ public class ManagerWin {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object object = e.getSource();
-			if (object == viewTrans) {
+			if (object == viewTrans) { // find all customer 's Transaction
 				new ViewTransactionWin(atm, -1);
-			} else if (object == viewTransByID) {
+			} else if (object == viewTransByID) { // find a customer 's Transaction
 				int index = cList.getSelectedIndex();
 				new ViewTransactionWin(atm, index + 1);
 			}

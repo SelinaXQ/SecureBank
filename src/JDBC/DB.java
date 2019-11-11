@@ -97,7 +97,7 @@ public class DB {
 	}
 
 	private HashMap<Integer, Balance> getBalances(String accNum, int cId) {
-
+		// get Balance 's currency id from accountID
 		HashMap<Integer, Balance> balances = new HashMap<>();
 		String sql = "select CurrencyID,money from accountinfo where custID=" + cId + " and id='" + accNum + "'";
 		ResultSet pResultSet;
@@ -121,6 +121,7 @@ public class DB {
 	}
 
 	private String getCurrencyType(int currencyID) {
+		// get currency type str by currency id
 		String sql = "select name from currencytype where ID=" + currencyID;
 		ResultSet pResultSet;
 		String currType = null;
@@ -194,11 +195,6 @@ public class DB {
 		}
 		return mID;
 	}
-
-//	public Stock getStocks() { // getCustomerID By index
-//		return null;
-//
-//	}
 
 	public int ifCustomerID(String username, String pwd) {
 
@@ -278,6 +274,7 @@ public class DB {
 	}
 
 	public void updateCustomerInfo(CustomerID cId) {
+		// update customerinfo
 		String add = cId.getAddress();
 		String password = cId.getPassword();
 		String phone = cId.getPhone();
@@ -293,7 +290,7 @@ public class DB {
 	}
 
 	public void insertAccount(int cIdIndex, Account acc, Balance b) {
-
+		// create a new account 
 		String id = acc.getAccountNumber();
 		int custId = cIdIndex;
 		int accountType = acc.getType();
@@ -311,6 +308,7 @@ public class DB {
 	}
 
 	public void updateAccount(Account acc, Balance b) {
+		// update account information
 		String id = acc.getAccountNumber();
 		int currencyID = b.getCurID();
 		double money = b.getMoney();
@@ -325,12 +323,13 @@ public class DB {
 	}
 
 	public int getCountsAcc() {
+		// counts accounts number
 		String sql = "Select * from accountinfo";
 		return mHelper.getCount(sql);
 	}
 
 	public boolean addStock(Stock stock) {
-
+		// add stock to database
 		String stockId = stock.getId();
 		String name = stock.getStockName();
 		Double price = stock.getPrice();
@@ -440,7 +439,7 @@ public class DB {
 	}
 
 	public boolean hasBindingSecurityAccount(String savingId) {
-
+		
 		String sql = "select * from securityinfo where AccountId = '" + savingId + "'";
 		ResultSet pResultSet;
 		pResultSet = mHelper.query(sql);
@@ -637,7 +636,7 @@ public class DB {
 	}
 
 	public void createCustomer(CustomerID cId) {
-		int id = cId.getIndex();
+	//	int id = cId.getIndex();
 		String username = cId.getUserName();
 		String password = cId.getPassword();
 		String address = cId.getAddress();
@@ -645,7 +644,7 @@ public class DB {
 		String name = cId.getName();
 		String collateral = cId.getCollateral();
 
-		String insertTransSql = "insert into customerinfo values(" + id + ", '" + name + "', '" + address + "', '"
+		String insertTransSql = "insert into customerinfo values(null,"+" '" + name + "', '" + address + "', '"
 				+ password + "', '" + username + "', '" + phoneNo + "', '" + collateral + "')";
 		try {
 			mHelper.update(insertTransSql);

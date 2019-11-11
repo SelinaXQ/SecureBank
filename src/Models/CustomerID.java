@@ -5,9 +5,7 @@ public class CustomerID extends ID {
 
 	private ArrayList<Account> accounts;
 	private String collateral = "";
-	private int currentCheAccount;
-	private int currentSavAccount;
-	private int currentLoaAccount;
+	private int currentCheAccount;  // take service charge
 	private String name = "";
 	private String address = "";
 	private String phone = "";
@@ -26,22 +24,6 @@ public class CustomerID extends ID {
 
 	public void setCurrentCheAccount(int currentCheAccount) {
 		this.currentCheAccount = currentCheAccount;
-	}
-
-	public int getCurrentSavAccount() {
-		return currentSavAccount;
-	}
-
-	public void setCurrentSavAccount(int currentSavAccount) {
-		this.currentSavAccount = currentSavAccount;
-	}
-
-	public int getCurrentLoaAccount() {
-		return currentLoaAccount;
-	}
-
-	public void setCurrentLoaAccount(int currentLoaAccount) {
-		this.currentLoaAccount = currentLoaAccount;
 	}
 
 	public String getAddress() {
@@ -64,10 +46,14 @@ public class CustomerID extends ID {
 		super(userName, password, index);
 		this.name = name;
 		accounts = new ArrayList<Account>();
-	//	Bank.createCheckingAccount(this);
 		setCurrentCheAccount(0);
-		setCurrentSavAccount(-1);
-		setCurrentLoaAccount(-1);
+	}
+	
+	public CustomerID(String name, String userName, String password) {
+		super(userName, password);
+		this.name = name;
+		accounts = new ArrayList<Account>();
+		setCurrentCheAccount(0);
 	}
 
 
@@ -92,6 +78,7 @@ public class CustomerID extends ID {
 
 
 	public ArrayList<Account> getOneAccounts(int accountType) {
+		// get one type of account
 		ArrayList<Account> asAccounts = new ArrayList<Account>();
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getType() == accountType && accounts.get(i).getCondition() == 1) {
@@ -102,7 +89,6 @@ public class CustomerID extends ID {
 	}
 
 	public String toString() {
-		// TODO
 		return name;
 	}
 

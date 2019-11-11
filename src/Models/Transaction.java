@@ -2,7 +2,7 @@ package Models;
 
 public class Transaction {
 	private String name;
-	private String info;
+	private String info;  // a brief transaction info
 	private Balance balance;
 	private String operaAccNum;
 	private String targetAccNum;

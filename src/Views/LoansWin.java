@@ -125,7 +125,7 @@ public class LoansWin {
 						return;
 					}
 
-					if (rb2.isSelected()) {// TODO return loans
+					if (rb2.isSelected()) {// return loans
 						if (ifAvailable(cId, amount, type) == false) {
 							JOptionPane.showMessageDialog(null, "You dont have enough money!", "Message",
 									JOptionPane.ERROR_MESSAGE);
@@ -134,13 +134,13 @@ public class LoansWin {
 						inOrOut = 2;
 						JOptionPane.showMessageDialog(null, "The loans has been returned.", "Message",
 								JOptionPane.INFORMATION_MESSAGE);
-					} else if (rb1.isSelected()) { // TODO make loans
+					} else if (rb1.isSelected()) { // make loans
 						inOrOut = 1;
 						JOptionPane.showMessageDialog(null,
 								"Now the money is available. Remember to return as soom as possible...", "Message",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
-					atm.loans(cId, acc, inOrOut, amount, type);
+					atm.transaction(cId, acc, inOrOut, amount, type);
 					// atm.updateCustomerInfo(cId);
 					atm.updateCustomerAccDB(cId);
 				}

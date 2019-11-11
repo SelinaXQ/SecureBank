@@ -10,6 +10,11 @@ public abstract class ID {
 		this.password = password;
 		this.index = index;
 	}
+	
+	public ID(String userName, String password) {
+		this.userName = userName;
+		this.password = password;
+	}
 
 	public int getIndex() {
 		return index;

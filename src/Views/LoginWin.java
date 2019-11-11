@@ -103,12 +103,12 @@ public class LoginWin {
 				pwdTF.setText("");
 			} else if (object == openB) {
 				new OpenAccWin(atm);
-			} else {
+			} else {  // if click OK
 				if (userNameTF.getText().trim().isEmpty() || pwdTF.getText().trim().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Please enter your username and passward!", "Message",
 							JOptionPane.ERROR_MESSAGE);
 					return;
-				} else if (object == loginB) {
+				} else if (object == loginB) {  // login to his ID
 
 					if (rb1.isSelected()) {
 						int index = atm.loginToBank(userNameTF.getText(), pwdTF.getText(), 2);
@@ -127,7 +127,7 @@ public class LoginWin {
 							new ManagerWin(atm, atm.getManagerByDB(index));
 						}
 					}
-				} else if (object == closeB) {
+				} else if (object == closeB) {  // close / delete all the information in his ID
 					if (rb1.isSelected()) {
 						int index = atm.loginToBank(userNameTF.getText(), pwdTF.getText(), 2);
 						if (index == 0) {

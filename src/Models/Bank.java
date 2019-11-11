@@ -11,7 +11,6 @@ public abstract class Bank {
 		CURRENCY_LIST = db.getCurrencyTypesStr();
 	}
 
-	public static int accountCount;
 
 	public static final int CHECKING_ACCOUNT = 1;
 	public static final int SAVING_ACCOUNT = 2;
@@ -64,13 +63,6 @@ public abstract class Bank {
 	
 	public static String[] CURRENCY_LIST;
 
-	public static int getAccountCount() {
-		return accountCount;
-	}
-
-	public static void setAccountCount() {
-		Bank.accountCount++;
-	}
 
 	public String getName() {
 		return name;
@@ -87,18 +79,12 @@ public abstract class Bank {
 	public static void createLoansAccount(CustomerID cId) {
 		LoansAccount lAccount = new LoansAccount();
 		cId.getAccounts().add(lAccount);
-		if (cId.getCurrentLoaAccount() == -1) {
-			cId.setCurrentLoaAccount(0);
-		}
 		charge(cId, LOANS_ACCOUNT_OPEN_FEE);
 	}
 
 	public static void createSavingAccount(CustomerID cId) {
 		SavingAccount sAccount = new SavingAccount();
 		cId.getAccounts().add(sAccount);
-		if (cId.getCurrentSavAccount() == -1) {
-			cId.setCurrentSavAccount(0);
-		}
 		charge(cId, SAVING_ACCOUNT_OPEN_FEE);
 	}
 
@@ -109,13 +95,14 @@ public abstract class Bank {
 
 	}
 
-	public static void charge(CustomerID cId, double price) {
+	public static void charge(CustomerID cId, double price) {  // service charge
 		int defaultAcc = cId.getCurrentCheAccount();
 		Balance b = cId.getAccounts().get(defaultAcc).getBalances().get(Bank.USD);
 		b.setMoney(b.getMoney() - price);
 	}
 
 	public void addTransaction(int cIdIndex, String name, String accNum, String tarNum, String info, Balance b) {
+		// add transaction history
 		Transaction t = new Transaction(cIdIndex, name, accNum, tarNum, info, b);
 		db.insertTransaction(t);
 	}
@@ -246,6 +233,7 @@ public abstract class Bank {
 	}
 
 	public void stopAccount(CustomerID cId, Account curAccount) {
+		// change an account 's condition to 0
 		for (int i = 0; i < cId.getAccounts().size(); i++) {
 			String s1 = cId.getAccounts().get(i).getAccountNumber();
 			String s2 = curAccount.getAccountNumber();
@@ -255,20 +243,6 @@ public abstract class Bank {
 			}
 		}
 		int type = curAccount.getType();
-		boolean flag = false;
-		for (int i = 0; i < cId.getAccounts().size(); i++) {
-			if (cId.getAccounts().get(i).getType() == type && cId.getAccounts().get(i).getCondition() == 1) {
-				flag = true;
-				break;
-			}
-		}
-		if (flag == false) {
-			if (type == Bank.SAVING_ACCOUNT) {
-				cId.setCurrentSavAccount(-1);
-			} else if (type == Bank.LOANS_ACCOUNT) {
-				cId.setCurrentLoaAccount(-1);
-			}
-		}
 		switch (type) {
 		case Bank.CHECKING_ACCOUNT:
 			charge(cId, CHECKING_ACCOUNT_CLOSE_FEE);
@@ -285,12 +259,8 @@ public abstract class Bank {
 
 	}
 
-	public void closeAccount(int index) {
-		deleteCustomer(index);
-	}
-
 	public void getInterest(CustomerID cId, Account acc) {
-
+		// get interest of saving account
 		for (int i = 0; i < cId.getAccounts().size(); i++) {
 			Account a = cId.getAccounts().get(i);
 			if (a.getAccountNumber().equals(acc.getAccountNumber())) {

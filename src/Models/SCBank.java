@@ -41,17 +41,11 @@ public class SCBank extends Bank {
 		SECURE_THRESOLD  = SC_SECURE_THRESOLD;
 	}
 
-	public static int getAccountCount() {
-		return accountCount;
-	}
 
-	public static void setAccountCount(int accountCount) {
-		SCBank.accountCount = accountCount;
-	}
 
 	public void createCustomer(String name, String userName, String pwd, String address, String phone,
 			String collateral) {
-		CustomerID cId = new CustomerID(name, userName, pwd, getCounts("Customer") + 1);
+		CustomerID cId = new CustomerID(name, userName, pwd);
 		cId.setAddress(address);
 		cId.setPhone(phone);
 		cId.setCollateral(collateral);
@@ -140,10 +134,6 @@ public class SCBank extends Bank {
 		return flag;
 	}
 	
-//	@Override
-//	public boolean ifSecurity(Account cur) { // By database
-//		return db.hasSecure(cur.getAccountNumber());
-//	}
 
 	@Override
 	public ArrayList<Transaction> getTransactions() { // By database

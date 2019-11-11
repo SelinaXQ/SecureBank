@@ -50,6 +50,7 @@ public class CustomerWin {
 		setCustomerWin(flag);
 		initComboBoxes();
 		initCustomerWin(win);
+		// choose the account of last action
 		switch (win) {
 		case 0:
 			curAccount = cheAccounts.get(0);
@@ -94,7 +95,7 @@ public class CustomerWin {
 		osbListener = new OpenSecurityButtonListener();
 
 		p = (JPanel) frame.getContentPane();
-
+		// change the card window
 		tabbedPane.addChangeListener(new ChangeListener() {
 
 			@Override
@@ -132,7 +133,7 @@ public class CustomerWin {
 	}
 
 	private void initComboBoxes() {
-
+		// if no accounts, we dont init the combobox of that type of accounts
 		cheAccounts = cId.getOneAccounts(Bank.CHECKING_ACCOUNT);
 
 		int curCheAcc = cheAccounts.size() - 1;
@@ -162,6 +163,7 @@ public class CustomerWin {
 	}
 
 	private String[] getAccountStr(ArrayList<Account> a) {
+		// get accounts number with ****
 		String[] str = new String[a.size()];
 		for (int i = 0; i < a.size(); i++) {
 			String s = a.get(i).getAccountNumber();
@@ -172,6 +174,8 @@ public class CustomerWin {
 	}
 
 	private void setUserRight(boolean flag) {
+		// if flag = false, this window is visited by a manager
+		// then we need to set unenable for the button
 		if (flag == false) {
 			bt1.setEnabled(false);
 			bt2.setEnabled(false);
@@ -397,6 +401,7 @@ public class CustomerWin {
 	private void settingComponents(int accountType, JComboBox<String> cb, JList<String> bList, ArrayList<JPanel> ps,
 			ArrayList<JLabel> ls, ArrayList<JButton> bs, ArrayList<GridBagLayout> gbs,
 			ArrayList<GridBagConstraints> gbcs) {
+		// put components at their place
 		if (cb != null) {
 			System.out.println(cb.getSelectedIndex());
 			String[] balancesStr = getBalalceList(0, accountType);
@@ -534,6 +539,7 @@ public class CustomerWin {
 	}
 
 	private String[] getBalalceList(int i, int accountType) {
+		// add balance (money, currencyID) information to the list
 		Account ac = null;
 		switch (accountType) {
 		case Bank.CHECKING_ACCOUNT:
@@ -655,7 +661,7 @@ public class CustomerWin {
 	}
 
 	class ProfileButtonListener implements ActionListener {
-
+		// modify profile information
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object object = e.getSource();
@@ -670,21 +676,14 @@ public class CustomerWin {
 			} else {
 				if (object == bt4) { // phone
 					cId.setPhone(tf4.getText());
-					// atm.updateCustomerInfo(cId);
-					atm.updateCustomerInfoDB(cId);
 				} else if (object == bt5) { // address
 					cId.setAddress(tf5.getText());
-					atm.updateCustomerInfoDB(cId);
-					// atm.updateCustomerInfo(cId);
 				} else if (object == bt6) { // pwd
 					cId.setPassword(pf1.getText());
-					// atm.updateCustomerInfo(cId);
-					atm.updateCustomerInfoDB(cId);
 				} else if (object == bt22) {
 					cId.setCollateral(tf6.getText());
-					// atm.updateCustomerInfo(cId);
-					atm.updateCustomerInfoDB(cId);
 				}
+				atm.updateCustomerInfoDB(cId);
 				JOptionPane.showMessageDialog(null, "Information Updated", "Message", JOptionPane.INFORMATION_MESSAGE);
 				new CustomerWin(atm, atm.getCustomerByDB(cId.getIndex()), true, 0, 0);
 				frame.dispose();
@@ -693,7 +692,7 @@ public class CustomerWin {
 	}
 
 	class CheSavAccButtonListener implements ActionListener {
-
+		// withdrawal of deposit money by checking or saving account
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int inOrOut = 0;
@@ -734,7 +733,6 @@ public class CustomerWin {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			Object object = e.getSource();
 			if (object == bt23) {
 				// check balance > threshold
@@ -750,7 +748,7 @@ public class CustomerWin {
 
 					if (!hasSecure(curAccount)) {
 						// if no secure account, new a secure account and put it into db
-						addSecure(curAccount);
+						atm.addSecurityDB(curAccount.getAccountNumber());
 						JOptionPane.showMessageDialog(null,
 								"Succeed open a security account, now you can trade stocks");
 					}
@@ -769,7 +767,7 @@ public class CustomerWin {
 	}
 
 	class AccOnOffButtonListener implements ActionListener {
-
+		// open or stop an account
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object object = e.getSource();
@@ -812,13 +810,13 @@ public class CustomerWin {
 				atm.updateCustomerAccDB(cId);
 			}
 
-			atm.newCustomerWin(atm, cId, true, tabbedPane.getSelectedIndex());
+			new CustomerWin(atm, atm.getCustomerByDB(cId.getIndex()), true, tabbedPane.getSelectedIndex(), 0);
 			frame.dispose();
 		}
 	}
 
 	class TransferButtonListener implements ActionListener {
-
+		// switch to transfer window
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			new TransferWin(atm, cId, curAccount, cb1.getSelectedIndex());
@@ -827,7 +825,7 @@ public class CustomerWin {
 	}
 
 	class LoaButtonListener implements ActionListener {
-
+		// switch to loans window
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int inOrOut = 0;
@@ -859,7 +857,7 @@ public class CustomerWin {
 	}
 
 	class ComboBoxListener implements ActionListener {
-
+		// list the balance info of each type of accounts
 		int index;
 		int accountType;
 		String[] balancesStr;
@@ -892,6 +890,7 @@ public class CustomerWin {
 	}
 
 	public boolean ifAvailable(Account cur) {
+		// if this account has enough money to withdrawal
 		boolean flag = true;
 		for (int i = 0; i < cur.getBalances().size(); i++) {
 			if (cur.getBalances().get(i + 1).getMoney() > 0) {
@@ -910,7 +909,7 @@ public class CustomerWin {
 	}
 
 	public boolean hasSecure(Account cur) {
-		//
+		// if a saving account has a security account
 		String savingNum = cur.getAccountNumber();
 		if (atm.hasBindingSecurityAccountDB(savingNum)) {
 			System.out.println("has secure");
@@ -920,12 +919,4 @@ public class CustomerWin {
 			return false;
 		}
 	}
-
-	public void addSecure(Account cur) {
-
-		String savingId = cur.getAccountNumber();
-		atm.addSecurityDB(savingId);
-
-	}
-
 }

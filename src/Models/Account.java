@@ -6,13 +6,12 @@ public class Account {
 	protected int type;
 	protected String accountNumber;
 	protected HashMap<Integer, Balance> balances;
-	protected int condition;
+	protected int condition; // if an account is closed
 
 	public Account() {
 		balances = new HashMap<Integer, Balance>();
 		balances.put(Bank.USD, new Balance(0, Bank.USD, "USD"));
 		setAccountNumber(SCBank.getCounts("Account") + 1);
-		Bank.setAccountCount();
 		condition = 1;
 	}
 

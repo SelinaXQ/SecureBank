@@ -27,9 +27,9 @@ public class SecurityWin {
 
 	private JPanel blankPanel, p1, p2, p3, p4;
 	private JPanel infoPanel;
-	private JPanel buyPanel;
-	private JPanel sellPanel;
-	private JPanel buyButtonPanel, boughtPanel, sellButtonPanel, stockMarketPanel, buyAmountPanel, sellAmountPanel;
+//	private JPanel buyPanel, buyButtonPanel;
+//	private JPanel sellPanel, sellButtonPanel;
+	private JPanel boughtPanel, stockMarketPanel, buyAmountPanel, sellAmountPanel;
 	private JList<String> stockList;
 	private JList<String> boughtList;
 	private ArrayList<Stock> stocks;
@@ -80,16 +80,16 @@ public class SecurityWin {
 		sellAmountField = new JTextField(10);
 
 		infoPanel = new JPanel();
-		buyPanel = new JPanel();
-		sellPanel = new JPanel();
+	//	buyPanel = new JPanel();
+	//	sellPanel = new JPanel();
 		blankPanel = new JPanel();
 		stockMarketPanel = new JPanel();
 		buyAmountPanel = new JPanel();
 		sellAmountPanel = new JPanel();
 
-		buyButtonPanel = new JPanel();
+	//	buyButtonPanel = new JPanel();
 		boughtPanel = new JPanel();
-		sellButtonPanel = new JPanel();
+	//	sellButtonPanel = new JPanel();
 
 		p1 = new JPanel();
 		p2 = new JPanel();

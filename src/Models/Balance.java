@@ -2,7 +2,7 @@ package Models;
 
 public class Balance {
 	private double money;
-	private String currency;
+	private String currency; // USD, JPY, ...
 	private int curID;
 
 	public Balance(double money, Integer curID, String currency) {

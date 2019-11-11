@@ -103,16 +103,19 @@ public class TransferWin {
 			if (e.getSource() == cancelB) {
 
 			} else if (e.getSource() == confirmB) {
+				// empty value
 				if (amountTF.getText().trim().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Please enter a value!", "Message", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				// invaild recipent
 				if (accTF.getText().trim().isEmpty() || atm.ifAccountDB(accTF.getText()) == false) {
 					JOptionPane.showMessageDialog(null, "Please enter a vaild recipient!", "Message",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				double amount;
+				// input is not number
 				try {
 					amount = Double.parseDouble(amountTF.getText());
 				} catch (Exception ex) {
@@ -120,11 +123,13 @@ public class TransferWin {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				// no enough money
 				if (ifAvailable(acc, amount, balType) == false) {
 					JOptionPane.showMessageDialog(null, "You dont have enough money!", "Message",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				// transfer money
 				atm.transfer(cId, acc, accTF.getText(), amount, balType);
 				JOptionPane.showMessageDialog(null, "The money has been delivered.", "Message",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -135,6 +140,7 @@ public class TransferWin {
 	}
 
 	class ComboBoxListener implements ItemListener {
+		// switch currency type
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				balType = cb.getSelectedIndex() + 1;
@@ -143,6 +149,7 @@ public class TransferWin {
 	}
 
 	public boolean ifAvailable(Account acc, double amount, int type) {
+		// if customer has enough money to transfer
 		if (acc.getBalances().get(type).getMoney() < amount) {
 			return false;
 		} else {

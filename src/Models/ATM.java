@@ -58,6 +58,7 @@ public class ATM {
 	}
 
 	public void transaction(CustomerID cId, Account acc, int inOrOut, double amount, int type) {
+		// transaction interface between ATM and bank
 		int accType = acc.getType();
 		if (accType == Bank.LOANS_ACCOUNT) {
 			if (inOrOut == 1) {
@@ -76,7 +77,8 @@ public class ATM {
 	}
 
 	public void transfer(CustomerID cId, Account acc, String acc2, double amount, int balanceType) {
-
+		// transfer money between banks
+		// acc
 		double newM = acc.getBalances().get(balanceType).getMoney() - amount;
 		String acc1 = null;
 		String acc0 = acc.getAccountNumber();
@@ -92,21 +94,19 @@ public class ATM {
 				break;
 			}
 		}
+		// target acc
 		ArrayList<CustomerID> cIds = currentBank.getCustomers();
-		System.out.println("1"+cIds.size());
 		for (int i = 0; i < cIds.size(); i++) {
 			CustomerID cId2 = cIds.get(i);
 			for (int j = 0; j < cId2.getAccounts().size(); j++) {
 				Account account = cId2.getAccounts().get(j);
-				System.out.println(account.getAccountNumber());
 				if (account.getAccountNumber().equals(acc2)) {
 					double money = account.getBalances().get(balanceType).getMoney() + amount;
 					account.getBalances().get(balanceType).setMoney(money);
 					cId2.getAccounts().set(j, account);
 					updateCustomerAccDB(cId2);
 					Balance b = new Balance(amount, balanceType, Bank.CURRENCY_LIST[balanceType] + 1);
-					currentBank.addTransaction(cId2.getIndex(), cId2.getName(), acc2, acc1,
-							Bank.TR_TRANSFER, b);
+					currentBank.addTransaction(cId2.getIndex(), cId2.getName(), acc2, acc1, Bank.TR_TRANSFER, b);
 					return;
 				}
 			}
@@ -114,6 +114,7 @@ public class ATM {
 	}
 
 	public void createAccount(CustomerID cId, int type) {
+		// create a certain type of account
 		switch (type) {
 		case Bank.CHECKING_ACCOUNT:
 			currentBank.createCheckingAccount(cId);
@@ -131,34 +132,22 @@ public class ATM {
 	}
 
 	public void stopAccount(CustomerID cId, Account curAccount) {
+		// stop an account, change its condition attribute to 0
 		currentBank.stopAccount(cId, curAccount);
 	}
 
-	public void newCustomerWin(ATM atm, CustomerID cId, boolean b, int win) {
-		new CustomerWin(atm, atm.getCustomerByDB(cId.getIndex()), true, win, 0);
-
-	}
-
-	public void loans(CustomerID cId, Account acc, int inOrOut, double amount, int type) {
-		if (inOrOut == 1) {
-			currentBank.borrowLoans(cId, acc, amount, type);
-		} else if (inOrOut == 2) {
-			currentBank.returnLoans(cId, acc, amount, type);
-		}
-		return;
-
-	}
-
 	public void getInterest(CustomerID cId, Account acc) {
+		// get Saving account 's interest
 		currentBank.getInterest(cId, acc);
 	}
 
 	public ArrayList<Transaction> getTransactionsDB(int cIdIndex) {
+		// get transactions from database
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 		trans.addAll(currentBank.getTransactions());
-		if (cIdIndex == -1) {
+		if (cIdIndex == -1) { // if this is a check by manager, we need to return all the transactions
 			return trans;
-		} else {
+		} else { // only remain transactions of this customer
 			for (int i = 0; i < trans.size(); i++) {
 				if (trans.get(i).getCusID() != cIdIndex) {
 					trans.remove(i);
@@ -180,16 +169,19 @@ public class ATM {
 	}
 
 	public void updateCustomerInfoDB(CustomerID cId) {
+		// update customer 's info
 		currentBank.updateCustomer(cId);
 
 	}
 
 	public void updateCustomerAccDB(CustomerID cId) {
+		// update customer 's account information and info
 		currentBank.updateCustomerAccs(cId.getIndex(), cId.getAccounts());
 
 	}
 
 	public boolean ifAccountDB(String accn) {
+		// check if there is an account of this accountnumber
 		return currentBank.ifAccount(accn);
 	}
 

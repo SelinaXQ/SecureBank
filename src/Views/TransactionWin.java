@@ -136,9 +136,11 @@ public class TransactionWin {
 			int type = cb.getSelectedIndex() + 1;
 			if (e.getSource() == confirmB) {
 				if (amountTF.getText().trim().isEmpty()) {
+					// empty value
 					JOptionPane.showMessageDialog(null, "Please input a value!", "Message", JOptionPane.ERROR_MESSAGE);
 				} else {
 					double amount;
+					// input is not number
 					try {
 						amount = Double.parseDouble(amountTF.getText());
 					} catch (Exception ex) {
@@ -146,17 +148,17 @@ public class TransactionWin {
 								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-
+					// no enough money
 					if (rb3.isSelected()) {
 						if (ifAvailable(acc, amount, type) == false) {
 							JOptionPane.showMessageDialog(null, "You dont have enough money!", "Message",
 									JOptionPane.ERROR_MESSAGE);
 							return;
-						}
+						}// get money
 						inOrOut = 2;
 						JOptionPane.showMessageDialog(null, "Now get the money.", "Message",
 								JOptionPane.INFORMATION_MESSAGE);
-					} else if (rb4.isSelected()) {
+					} else if (rb4.isSelected()) { // get money
 						inOrOut = 1;
 						JOptionPane.showMessageDialog(null, "Now put the money in the ATM...", "Message",
 								JOptionPane.INFORMATION_MESSAGE);
