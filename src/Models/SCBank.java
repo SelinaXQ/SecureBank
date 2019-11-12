@@ -109,7 +109,7 @@ public class SCBank extends Bank {
 
 	}
 
-	public static int getCounts(String classstr) { // By database
+	public static int getCounts(String classstr) { // By database 
 		int c = 0;
 		if (classstr.equals("Account")) {
 			c = db.getCountsAcc();
