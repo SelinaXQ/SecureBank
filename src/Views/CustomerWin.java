@@ -403,7 +403,6 @@ public class CustomerWin {
 			ArrayList<GridBagConstraints> gbcs) {
 		// put components at their place
 		if (cb != null) {
-			System.out.println(cb.getSelectedIndex());
 			String[] balancesStr = getBalalceList(0, accountType);
 			bList.setListData(balancesStr);
 		}
@@ -793,6 +792,7 @@ public class CustomerWin {
 					if (cb1.getSelectedIndex() == 0) {
 						JOptionPane.showMessageDialog(null, "This is a default account, you cannot stop it!", "Message",
 								JOptionPane.ERROR_MESSAGE);
+					return;
 					}
 				} else if (object == bt19) {
 					curAccount = savAccounts.get(cb2.getSelectedIndex());
