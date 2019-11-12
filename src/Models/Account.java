@@ -11,6 +11,8 @@ public class Account {
 	public Account() {
 		balances = new HashMap<Integer, Balance>();
 		balances.put(Bank.USD, new Balance(0, Bank.USD, "USD"));
+		balances.put(Bank.CNY, new Balance(0, Bank.CNY, "CNY"));
+		balances.put(Bank.JPY, new Balance(0, Bank.JPY, "JPY"));
 		setAccountNumber(SCBank.getCounts("Account") + 1);
 		condition = 1;
 	}
