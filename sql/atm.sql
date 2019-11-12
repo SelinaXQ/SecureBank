@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80018
 File Encoding         : 65001
 
-Date: 2019-11-10 22:49:44
+Date: 2019-11-11 21:28:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,10 +27,10 @@ use ATM;
 -- ----------------------------
 DROP TABLE IF EXISTS `accountinfo`;
 CREATE TABLE `accountinfo` (
-  `ID` varchar(20) NOT NULL COMMENT 'account’s ID',
-  `CustID` int(11) NOT NULL COMMENT 'customer’s ID',
-  `AccountType` int(11) NOT NULL COMMENT 'account’s type: 1.Saving; 2.Checking; 3.Loan',
-  `CurrencyID` int(11) NOT NULL COMMENT 'currency’s type: 1.USD; 2.CNY; 3.JPY etc',
+  `ID` varchar(20) NOT NULL COMMENT 'account??s ID',
+  `CustID` int(11) NOT NULL COMMENT 'customer??s ID',
+  `AccountType` int(11) NOT NULL COMMENT 'account??s type: 1.Saving; 2.Checking; 3.Loan',
+  `CurrencyID` int(11) NOT NULL COMMENT 'currency??s type: 1.USD; 2.CNY; 3.JPY etc',
   `Money` double(32,2) NOT NULL COMMENT 'money',
   `Con` int(11) NOT NULL,
   PRIMARY KEY (`ID`,`AccountType`,`CurrencyID`),
@@ -38,32 +38,31 @@ CREATE TABLE `accountinfo` (
   KEY `CurrencyID` (`CurrencyID`),
   KEY `accountinfo_ibfk_1` (`CustID`),
   KEY `ID` (`ID`),
-  CONSTRAINT `accountinfo_ibfk_1` FOREIGN KEY (`CustID`) REFERENCES `customerinfo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `accountinfo_ibfk_3` FOREIGN KEY (`CurrencyID`) REFERENCES `currencytype` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of accountinfo
 -- ----------------------------
-INSERT INTO `accountinfo` VALUES ('00000002', '2', '1', '1', '9990990.00', '1');
-INSERT INTO `accountinfo` VALUES ('00000003', '3', '1', '1', '-30.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000001', '1', '1', '1', '1.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000001', '1', '1', '2', '0.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000001', '1', '1', '3', '0.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000002', '2', '1', '1', '9971440.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000002', '2', '1', '2', '0.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000002', '2', '1', '3', '0.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000003', '3', '1', '1', '0.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000003', '3', '1', '2', '-30.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000003', '3', '1', '3', '0.00', '1');
 INSERT INTO `accountinfo` VALUES ('00000004', '2', '2', '1', '0.00', '0');
 INSERT INTO `accountinfo` VALUES ('00000005', '2', '3', '1', '0.00', '0');
 INSERT INTO `accountinfo` VALUES ('00000006', '2', '2', '1', '6239.39', '0');
 INSERT INTO `accountinfo` VALUES ('00000007', '2', '2', '1', '0.00', '0');
 INSERT INTO `accountinfo` VALUES ('00000008', '2', '3', '1', '0.00', '0');
 INSERT INTO `accountinfo` VALUES ('00000009', '2', '3', '1', '0.00', '0');
-INSERT INTO `accountinfo` VALUES ('00000010', '2', '1', '1', '200.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000010', '2', '1', '1', '10200.00', '1');
 INSERT INTO `accountinfo` VALUES ('00000011', '2', '1', '1', '555.00', '1');
-INSERT INTO `accountinfo` VALUES ('00000012', '2', '3', '1', '0.00', '0');
-INSERT INTO `accountinfo` VALUES ('00000013', '2', '2', '1', '6024.02', '0');
-INSERT INTO `accountinfo` VALUES ('00000014', '2', '2', '1', '1200.00', '0');
-INSERT INTO `accountinfo` VALUES ('00000015', '3', '2', '1', '0.00', '1');
-INSERT INTO `accountinfo` VALUES ('00000016', '3', '2', '1', '0.00', '1');
-INSERT INTO `accountinfo` VALUES ('00000017', '3', '2', '1', '0.00', '1');
-INSERT INTO `accountinfo` VALUES ('00000019', '1', '1', '1', '-10.00', '1');
-INSERT INTO `accountinfo` VALUES ('00000019', '2', '2', '1', '0.00', '0');
-INSERT INTO `accountinfo` VALUES ('00000021', '2', '2', '1', '5080.56', '1');
+INSERT INTO `accountinfo` VALUES ('00000012', '6', '1', '1', '-10.00', '1');
+INSERT INTO `accountinfo` VALUES ('00000012', '6', '1', '2', '0.00', '1');
 
 -- ----------------------------
 -- Table structure for `accounttype`
@@ -104,15 +103,15 @@ INSERT INTO `currencytype` VALUES ('3', 'JPY');
 -- ----------------------------
 DROP TABLE IF EXISTS `customerinfo`;
 CREATE TABLE `customerinfo` (
-  `ID` int(11) NOT NULL COMMENT 'customer’s ID',
-  `Name` varchar(40) NOT NULL COMMENT 'customer’s name (first name and last name etc)',
-  `Address` varchar(50) DEFAULT NULL COMMENT 'customer’s address',
+  `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'customer??s ID',
+  `Name` varchar(40) NOT NULL COMMENT 'customer??s name (first name and last name etc)',
+  `Address` varchar(50) DEFAULT NULL COMMENT 'customer??s address',
   `Password` varchar(20) NOT NULL COMMENT 'password',
   `Username` varchar(40) NOT NULL COMMENT 'customized name for login etc',
   `PhoneNo` varchar(20) DEFAULT NULL COMMENT 'phone number',
   `Collateral` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of customerinfo
@@ -120,13 +119,15 @@ CREATE TABLE `customerinfo` (
 INSERT INTO `customerinfo` VALUES ('1', 'Lucy Lucky', '680 CommonWealth Ave', '123456', 'Lucy', '0482619522', 'OOD');
 INSERT INTO `customerinfo` VALUES ('2', 'Tom Jackson', '66 Skytree Avenue', '123456', 'Rich man', '0371337198', 'Very rich man');
 INSERT INTO `customerinfo` VALUES ('3', 'James Joseph', '777 Lucky Avenue', '123456', 'Customer', '0234215193', null);
+INSERT INTO `customerinfo` VALUES ('4', '1', '1', '1', '1', '1', '1');
+INSERT INTO `customerinfo` VALUES ('5', '2', '3', '2', '1', '', '');
 
 -- ----------------------------
 -- Table structure for `managerinfo`
 -- ----------------------------
 DROP TABLE IF EXISTS `managerinfo`;
 CREATE TABLE `managerinfo` (
-  `ID` int(11) NOT NULL COMMENT 'customer’s ID',
+  `ID` int(11) NOT NULL COMMENT 'customer??s ID',
   `Password` varchar(20) NOT NULL COMMENT 'password',
   `Username` varchar(40) NOT NULL COMMENT 'customized name for login etc',
   PRIMARY KEY (`ID`)
@@ -176,9 +177,6 @@ CREATE TABLE `securityinfo` (
 -- ----------------------------
 INSERT INTO `securityinfo` VALUES ('5', '00000002');
 INSERT INTO `securityinfo` VALUES ('1', '00000006');
-INSERT INTO `securityinfo` VALUES ('3', '00000013');
-INSERT INTO `securityinfo` VALUES ('2', '00000014');
-INSERT INTO `securityinfo` VALUES ('6', '00000021');
 
 -- ----------------------------
 -- Table structure for `sharesinfo`
@@ -199,9 +197,6 @@ CREATE TABLE `sharesinfo` (
 -- ----------------------------
 -- Records of sharesinfo
 -- ----------------------------
-INSERT INTO `sharesinfo` VALUES ('1', '1', '1', '10');
-INSERT INTO `sharesinfo` VALUES ('2', '1', 'accddff', '10');
-INSERT INTO `sharesinfo` VALUES ('3', '6', 'accddff', '20');
 
 -- ----------------------------
 -- Table structure for `stockinfo`
@@ -217,8 +212,6 @@ CREATE TABLE `stockinfo` (
 -- ----------------------------
 -- Records of stockinfo
 -- ----------------------------
-INSERT INTO `stockinfo` VALUES ('1', 'rewwr', '0.10');
-INSERT INTO `stockinfo` VALUES ('accddff', 'oeq', '0.08');
 
 -- ----------------------------
 -- Table structure for `stockpricechange`
@@ -254,7 +247,7 @@ CREATE TABLE `transactiondetails` (
   PRIMARY KEY (`ID`),
   KEY `OpAccountID` (`OpAccountID`),
   KEY `TargetAccountID` (`TargetAccountID`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transactiondetails
@@ -280,36 +273,33 @@ INSERT INTO `transactiondetails` VALUES ('18', '00000020', '', '100.00', '1', 'J
 INSERT INTO `transactiondetails` VALUES ('19', '00000002', '', '10000000.00', '1', 'Tom Jackson', '2', 'Saving Money to Checking Account');
 INSERT INTO `transactiondetails` VALUES ('20', '00000002', '', '-9989.00', '1', 'Tom Jackson', '2', 'Returning loans');
 INSERT INTO `transactiondetails` VALUES ('21', '00000021', '', '5000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('22', '00000002', '', '10000.00', '1', 'Tom Jackson', '2', 'Withdrawing cash from checking account');
+INSERT INTO `transactiondetails` VALUES ('23', '00000002', '', '2000.00', '1', 'Tom Jackson', '2', 'Saving Money to Checking Account');
+INSERT INTO `transactiondetails` VALUES ('24', '00000002', '', '1000.00', '1', 'Tom Jackson', '2', 'Withdrawing cash from checking account');
+INSERT INTO `transactiondetails` VALUES ('25', '00000021', '', '2000.00', '1', 'Tom Jackson', '2', 'Withdrawing cash from saving account');
+INSERT INTO `transactiondetails` VALUES ('26', '00000021', '', '50000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('27', '00000021', '', '50100.00', '1', 'Tom Jackson', '2', 'Withdrawing cash from saving account');
+INSERT INTO `transactiondetails` VALUES ('28', '00000021', '', '50000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('29', '00000021', '', '100000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('30', '00000021', '', '1000000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('31', '00000021', '', '10000000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('32', '00000021', '', '1000000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('33', '00000021', '', '1000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
+INSERT INTO `transactiondetails` VALUES ('34', '00000002', '00000010', '-10000.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('35', '00000010', '00000002', '10000.00', '1', 'Tom Jackson', '2', 'Transfer Money');
+INSERT INTO `transactiondetails` VALUES ('36', '00000021', '', '100000.00', '1', 'Tom Jackson', '2', 'Saving Money to Saving Account');
 
 -- ----------------------------
 -- View structure for `pricechanged`
 -- ----------------------------
 DROP VIEW IF EXISTS `pricechanged`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pricechanged` AS 
-SELECT 
-    `s`.`stockID` AS `ID`, `s`.`pricechanged` AS `pricechanged`
-FROM
-    (SELECT 
-        `t`.`stockID` AS `stockID`,
-            `t`.`pricechanged` AS `pricechanged`
-    FROM
-        ((SELECT 
-        `stockpricechange`.`stockID` AS `stockID`,
-            MAX(`stockpricechange`.`systime`) AS `latesttime`
-    FROM
-        `stockpricechange`
-    GROUP BY `stockpricechange`.`stockID`) `s`
-    JOIN `stockpricechange` `t`)
-    WHERE
-        ((`s`.`stockID` = `t`.`stockID`)
-            AND (`t`.`systime` = `s`.`latesttime`))) `s`;
-
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pricechanged` AS select `s`.`stockID` AS `ID`,`s`.`pricechanged` AS `pricechanged` from (select `t`.`stockID` AS `stockID`,`t`.`pricechanged` AS `pricechanged` from ((select `stockpricechange`.`stockID` AS `stockID`,max(`stockpricechange`.`systime`) AS `latesttime` from `stockpricechange` group by `stockpricechange`.`stockID`) `s` join `stockpricechange` `t`) where ((`s`.`stockID` = `t`.`stockID`) and (`t`.`systime` = `s`.`latesttime`))) `s` ;
 
 -- ----------------------------
--- CREATE PROCEDURE `StockPriceChanges`
--- This procedure is to simulate the fluctuation of the stock prices 
+-- Procedure structure for `StockPriceChanges`
 -- ----------------------------
-DELIMITER $$
+DROP PROCEDURE IF EXISTS `StockPriceChanges`;
+DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `StockPriceChanges`()
 BEGIN
 insert into StockPriceChange
@@ -334,17 +324,14 @@ WHERE
 UPDATE StockInfo t 
 SET 
     t.currentprice = FORMAT(t.currentprice, 2);
-END$$
-
+END
+;;
 DELIMITER ;
-;
-
 
 -- ----------------------------
--- CREATE EVENT `changestockprice`
--- This procedure is to simulate the fluctuation of the stock prices 
--- call the procedure StockPriceChange() every 10 seconds
+-- Event structure for `changestockprice`
 -- ----------------------------
+DROP EVENT IF EXISTS `changestockprice`;
 SET GLOBAL event_scheduler = ON;
 
 CREATE EVENT changestockprice
