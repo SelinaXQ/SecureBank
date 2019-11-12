@@ -252,7 +252,7 @@ public class SecurityWin {
 						boughtList.setListData(stockStr2);
 
 					}
-					atm.transaction(cId, acc, 2, sellAmount*stocks.get(curBuyListId).getPrice(), 1);
+					atm.transaction(cId, acc, 2, -sellAmount*stocks.get(curBuyListId).getPrice(), 1);
 					atm.updateCustomerAccDB(cId);
 				}
 			}
