@@ -12,10 +12,15 @@ public class DB {
 		mHelper = new MySQLHelper();
 	}
 
-	public Account getAccount(String acnumber) {
+	public Account getAccount(String acnumber, Balance b) {
 		// get accounts ID By accountnumber
 		Account acc = null;
-		String sql = "select * from accountinfo where ID=" + acnumber;
+		String sql = null;
+		if (b == null) {
+			sql = "select * from accountinfo where ID='" + acnumber + "'";
+		} else {
+			sql = "select * from accountinfo where ID='" + acnumber + "' and currencyid=" + b.getCurID();
+		}
 		ResultSet pResultSet;
 		try {
 			pResultSet = mHelper.query(sql);
@@ -29,6 +34,7 @@ public class DB {
 				acc = new Account(accNumber, accType, condition);
 				HashMap<Integer, Balance> balances = getBalances(accNumber, custID);
 				acc.setBalances(balances);
+				break;
 
 			}
 			pResultSet.close();
@@ -62,7 +68,15 @@ public class DB {
 					Account acc = new Account(accNumber, accType, 1);
 					HashMap<Integer, Balance> balances = getBalances(accNumber, id);
 					acc.setBalances(balances);
-					accs.add(acc);
+					boolean flag = true;
+					for (int i = 0; i < accs.size(); i++) {
+						if (accs.get(i).getAccountNumber().equals(acc.getAccountNumber())) {
+							flag = false;
+						}
+					}
+					if (flag == true) {
+						accs.add(acc);
+					}
 				}
 			}
 			pResultSet.close();
@@ -290,7 +304,7 @@ public class DB {
 	}
 
 	public void insertAccount(int cIdIndex, Account acc, Balance b) {
-		// create a new account 
+		// create a new account
 		String id = acc.getAccountNumber();
 		int custId = cIdIndex;
 		int accountType = acc.getType();
@@ -439,7 +453,7 @@ public class DB {
 	}
 
 	public boolean hasBindingSecurityAccount(String savingId) {
-		
+
 		String sql = "select * from securityinfo where AccountId = '" + savingId + "'";
 		ResultSet pResultSet;
 		pResultSet = mHelper.query(sql);
@@ -612,7 +626,6 @@ public class DB {
 	}
 
 	public void insertTransaction(Transaction t) {
-		System.out.println(t);
 		// get the information of transaction
 		String name = t.getName();
 		String info = t.getInfo();
@@ -636,7 +649,7 @@ public class DB {
 	}
 
 	public void createCustomer(CustomerID cId) {
-	//	int id = cId.getIndex();
+		int id = cId.getIndex();
 		String username = cId.getUserName();
 		String password = cId.getPassword();
 		String address = cId.getAddress();
@@ -644,7 +657,7 @@ public class DB {
 		String name = cId.getName();
 		String collateral = cId.getCollateral();
 
-		String insertTransSql = "insert into customerinfo values(null,"+" '" + name + "', '" + address + "', '"
+		String insertTransSql = "insert into customerinfo values(" + id + " ,'" + name + "', '" + address + "', '"
 				+ password + "', '" + username + "', '" + phoneNo + "', '" + collateral + "')";
 		try {
 			mHelper.update(insertTransSql);
@@ -652,13 +665,19 @@ public class DB {
 			e.printStackTrace();
 		}
 
+		return;
+
+	}
+
+	public int getCountsCust() {
+		String sql = "Select * from customerinfo";
+		return mHelper.getCount(sql);
 	}
 
 	public void deleteCustomer(int CIdIndex) {
 		String sql = "delete from customerinfo where id = " + CIdIndex + "";
 		try {
 			mHelper.update(sql);
-			System.out.println("Succeed delete a stock");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

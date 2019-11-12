@@ -43,7 +43,7 @@ public class SCBank extends Bank {
 
 	public void createCustomer(String name, String userName, String pwd, String address, String phone,
 			String collateral) {
-		CustomerID cId = new CustomerID(name, userName, pwd);
+		CustomerID cId = new CustomerID(name, userName, pwd, getCounts("Customer") + 1);
 		cId.setAddress(address);
 		cId.setPhone(phone);
 		cId.setCollateral(collateral);
@@ -93,14 +93,15 @@ public class SCBank extends Bank {
 	public void updateCustomerAccs(int cIdIndex, ArrayList<Account> accs) { // By database
 		for (int i = 0; i < accs.size(); i++) {
 			Account acc = accs.get(i);
-			Account accQuery = db.getAccount(acc.getAccountNumber());
+
 			HashMap<Integer, Balance> bs = acc.getBalances();
-			if (accQuery == null) {
-				for (Balance b : bs.values()) {
+
+			for (Balance b : bs.values()) {
+				Account accQuery = db.getAccount(acc.getAccountNumber(), b);
+				if (accQuery == null) {
+
 					db.insertAccount(cIdIndex, acc, b);
-				}
-			} else {
-				for (Balance b : bs.values()) {
+				} else {
 					db.updateAccount(acc, b);
 				}
 			}
@@ -112,6 +113,8 @@ public class SCBank extends Bank {
 		int c = 0;
 		if (classstr.equals("Account")) {
 			c = db.getCountsAcc();
+		}else if(classstr.equals("Customer")) {
+			c = db.getCountsCust();
 		}
 		return c;
 	}
@@ -121,6 +124,7 @@ public class SCBank extends Bank {
 		for (int i = 0; i < cId.getAccounts().size(); i++) {
 			stopAccount(cId, cId.getAccounts().get(i));
 		}
+		updateCustomerAccs(cId.getIndex(), cId.getAccounts());
 		db.deleteCustomer(cId.getIndex());
 	}
 
@@ -128,7 +132,7 @@ public class SCBank extends Bank {
 	public boolean ifAccount(String accn) { // By database
 		boolean flag = false;
 		Account account = null;
-		account = db.getAccount(accn);
+		account = db.getAccount(accn, null);
 		if (account != null && account.getType() != Bank.LOANS_ACCOUNT) {
 			flag = true;
 		}
