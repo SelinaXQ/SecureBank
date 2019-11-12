@@ -345,7 +345,9 @@ DELIMITER ;
 -- This procedure is to simulate the fluctuation of the stock prices 
 -- call the procedure StockPriceChange() every 10 seconds
 -- ----------------------------
+SET GLOBAL event_scheduler = ON;
+
 CREATE EVENT changestockprice
     ON SCHEDULE EVERY 10 SECOND
     DO
-      call StockPriceChange();
+      call StockPriceChanges();
