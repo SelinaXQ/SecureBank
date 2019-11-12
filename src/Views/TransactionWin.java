@@ -148,7 +148,7 @@ public class TransactionWin {
 								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					// no enough money
+					// no enough money 
 					if (rb3.isSelected()) {
 						if (ifAvailable(acc, amount, type) == false) {
 							JOptionPane.showMessageDialog(null, "You dont have enough money!", "Message",
